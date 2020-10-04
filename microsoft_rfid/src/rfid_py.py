@@ -21,7 +21,7 @@ def rfidFuc():
         return read_hex
 
 def rfid_talker():
-    pub = rospy.Publisher('rfid_id', String, queue_size=10)
+    pub = rospy.Publisher('rfid_msg', String, queue_size=10)
     rospy.init_node('rfid_talker', anonymous=True)
     rate = rospy.Rate(10)  # 10hz
     while not rospy.is_shutdown():
