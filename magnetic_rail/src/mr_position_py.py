@@ -15,10 +15,12 @@ from magnetic_rail.msg import MrMsg
 g_ser_magnet = serial.Serial('/dev/ttyUSB0', 115200, bytesize=8,
                              parity=serial.PARITY_EVEN, stopbits=1, timeout=0.07)
 
+mr_msg = MrMsg()
+
 def magnetFuc():
-    num = None
-    offset = None
-    width = None
+    num = 0
+    offset = 0
+    width = 0
 
     data_raw = g_ser_magnet.read()
 
@@ -57,19 +59,28 @@ def magnetFuc():
 
 
 
-def rfid_talker():
-    pub = rospy.Publisher('rfid_msg', MrMsg, queue_size=10)
-    rospy.init_node('rfid_talker', anonymous=True)
-    rate = rospy.Rate(10)  # 10hz
-    while not rospy.is_shutdown():
+def mr_talker():
+    global mr_msg
 
+    pub = rospy.Publisher('mr_msg', MrMsg, queue_size=10)
+    rospy.init_node('mr_talker', anonymous=True)
+    rate = rospy.Rate(100)  # 10hz
+    while not rospy.is_shutdown():
+        
         num, offset, width = magnetFuc()
-        rospy.loginfo(num, offset, width)
-        pub.publish(rfid_id)
-        rate.sleep()
+        # print("num:{} offset:{} width:{}".format(num, offset, width))
+        
+        mr_msg.num = num
+        mr_msg.offset = offset
+        mr_msg.width = width
+
+        rospy.loginfo(mr_msg)
+        pub.publish(mr_msg)
+        
+        # rate.sleep()
 
 if __name__ == '__main__':
     try:
-        rfid_talker()
+        mr_talker()
     except rospy.ROSInterruptException:
         pass

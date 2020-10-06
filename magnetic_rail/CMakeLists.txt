@@ -205,3 +205,10 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+####################
+## mr_position_py ##
+####################
+catkin_install_python(PROGRAMS src/mr_position_py.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
