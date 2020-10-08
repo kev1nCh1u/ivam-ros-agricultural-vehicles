@@ -191,6 +191,15 @@ onewheel_vw::onewheel_vw(char *dev_name, int Baudrate):Move_Robot(dev_name, Baud
 
   ini_way_theta = 0.0;
 
+  M_Navi_Output_Steering_Theta = 0;
+  M_Navi_Input_error = 0;
+  M_Navi_Pre_error = 0;
+  M_Navi_error = 0;
+
+  M_Navi_Kp = 15;
+  M_Navi_Kd = 3;
+  M_Navi_EV_L = 160; //cm
+
   std::cout<<"v_buf"<< v_buf<<std::endl;
   std::cout<<"onewheel_vw"<<std::endl;
   Clear_ObsModeSubscriber_=node_.subscribe("Clear_ObsMode", 10, &onewheel_vw::ClearCallback,this);

@@ -9,9 +9,6 @@ import time
 import sys
 
 
-g_ser_rfid = serial.Serial('/dev/ttyUSB0', 38400, bytesize=8,
-                           parity=serial.PARITY_EVEN, stopbits=1, timeout=0.07)
-
 def rfidFuc():
     g_ser_rfid.write([0xaa, 0xdd, 0x00, 0x03, 0x01, 0x0c, 0x0d])
     read = g_ser_rfid.read(18)
@@ -19,6 +16,7 @@ def rfidFuc():
     if(len(read_hex) == 18):
         # print(read_hex)
         return read_hex
+
 
 def rfid_talker():
     pub = rospy.Publisher('rfid_msg', String, queue_size=10)
@@ -33,6 +31,23 @@ def rfid_talker():
 
 
 if __name__ == '__main__':
+    try:
+        input_argv = sys.argv
+        input_port = input_argv[1]
+        input_baudrate = input_argv[2]
+        print('====== input setting ======')
+    except:
+        input_port = "/dev/ttyUSB0"
+        input_baudrate = "38400"
+        print('====== defalt setting ======')
+    print("port: " + input_port)
+    print("baudrate: " + input_baudrate)
+    print('=========================')
+    g_ser_rfid = serial.Serial(input_port, input_baudrate, bytesize=8,
+                               parity=serial.PARITY_EVEN, stopbits=1, timeout=0.07)
+
+    time.sleep(1)
+
     try:
         rfid_talker()
     except rospy.ROSInterruptException:

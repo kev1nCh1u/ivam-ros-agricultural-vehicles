@@ -11,9 +11,7 @@ import sys
 from std_msgs.msg import String
 from magnetic_rail.msg import MrMsg
 
-
-g_ser_magnet = serial.Serial('/dev/ttyUSB0', 115200, bytesize=8,
-                             parity=serial.PARITY_EVEN, stopbits=1, timeout=0.07)
+import threading
 
 mr_msg = MrMsg()
 
@@ -62,9 +60,12 @@ def magnetFuc():
 def mr_talker():
     global mr_msg
 
+    # serial_work = threading.Thread(target=publisher_thread)
+    # serial_work.start()
+
     pub = rospy.Publisher('mr_msg', MrMsg, queue_size=10)
     rospy.init_node('mr_talker', anonymous=True)
-    rate = rospy.Rate(100)  # 10hz
+    # rate = rospy.Rate(100)  # 10hz
     while not rospy.is_shutdown():
         
         num, offset, width = magnetFuc()
@@ -74,12 +75,28 @@ def mr_talker():
         mr_msg.offset = offset
         mr_msg.width = width
 
-        rospy.loginfo(mr_msg)
+        rospy.loginfo(mr_msg.offset)
         pub.publish(mr_msg)
-        
+
         # rate.sleep()
 
 if __name__ == '__main__':
+    try:
+        input_argv = sys.argv
+        input_port = input_argv[1]
+        input_baudrate = input_argv[2]
+        print('====== input setting ======')
+    except:
+        input_port = "/dev/ttyUSB0"
+        input_baudrate = "115200"
+        print('====== defalt setting ======')
+    print("port: " + input_port)
+    print("baudrate: " + input_baudrate)
+    print('=========================')
+    g_ser_magnet = serial.Serial(input_port, input_baudrate, bytesize=8,
+                             parity=serial.PARITY_EVEN, stopbits=1, timeout=0.07)
+    time.sleep(1)
+
     try:
         mr_talker()
     except rospy.ROSInterruptException:

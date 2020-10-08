@@ -48,6 +48,8 @@
 #include "sendrev.h"
 #include "MPC.h"
 
+#include "magnetic_rail/MrMsg.h"
+
 #define CarParameterPATH_Local "/src/move_robot/parameter/car_parameter"
 #define LocalparPATH_Local "/src/move_robot/parameter/local_parameter"
 
@@ -285,7 +287,7 @@ public:
     //Farm AGV Vision
     void Farm_AGV_Vision_Callback(const std_msgs::String &Vision_msg);
     void Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg);
-    void Farm_AGV_Magnetic_Callback(const std_msgs::Float32 &Magnetic_msg);
+    void Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg);
 
     // //Timer & Thread & SERIAL
     // //void timerCallback(const ros::TimerEvent& event);
@@ -2066,9 +2068,9 @@ void Move_Robot::Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg)
     }
 }
 
-void Move_Robot::Farm_AGV_Magnetic_Callback(const std_msgs::Float32 &Magnetic_msg)
+void Move_Robot::Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg)
 {
-    Magnetic_Offset = Magnetic_msg.data; //cm
+    Magnetic_Offset = Magnetic_msg.offset; //cm
 }
 
 void Move_Robot::Fix_IMU(const geometry_msgs::PoseStamped EV_Pose_msg, Eigen::Vector3f &EV_Pose_Vec)
