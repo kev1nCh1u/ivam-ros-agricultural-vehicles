@@ -1,11 +1,20 @@
 # agricultural_vehicles
 
 ## start command
-
+    cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws
+    
     roscore
-    rosrun microsoft_rfid rfid_py.py /dev/ttyUSB1 115200
-    rosrun magnetic_rail mr_position_py.py /dev/ttyUSB1 115200
+    
+    . devel/setup.bash
+    
+    rosrun JoyStick joystick /dev/input/js0
+    
+    rosrun microsoft_rfid rfid_py.py /dev/ttyUSB0 38400
+    
+    rosrun magnetic_rail mr_position_py.py /dev/ttyUSB2 115200
+    
     rosrun move_robot move_robot /dev/ttyUSB1 115200
+    
     rosrun rviz rviz
 
 ## 啟動步驟
