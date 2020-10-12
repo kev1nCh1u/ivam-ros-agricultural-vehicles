@@ -110,10 +110,11 @@ bool LoadCarKind(std::string file_buf,int &returnbuf)
 
 
 }
+//////////////////////////////// 抓到workspace目錄 /////////////////////////////////////
 void LoadTitlePath()
 {
 
-    std::string NOWPath = ros::package::getPath("AnhungControl");
+    std::string NOWPath = ros::package::getPath("move_robot");
 
 	std::string PATH_par;
 	std::string recv_pkg[100];
@@ -126,8 +127,12 @@ void LoadTitlePath()
         count++;
     }
 
-	TitlePath = "/" + recv_pkg[1] + "/" + recv_pkg[2] + "/" + recv_pkg[3];
-	std::cout<<"TitlePath  " <<TitlePath <<std::endl;
+	// TitlePath = "/" + recv_pkg[1] + "/" + recv_pkg[2] + "/" + recv_pkg[3];
+    for(int i=1; i<count-2; i++){
+        TitlePath += "/" + recv_pkg[i];
+    }
+
+	std::cout<<"TitlePath: " <<TitlePath <<std::endl;
 
 }
 void kind_search(int CarKind ,char **argv ,int baudrate)
