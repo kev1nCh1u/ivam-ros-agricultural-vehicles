@@ -34,3 +34,10 @@
 - A -> joystick mode
 - RT -> 油門
 - LT -> 煞車
+
+
+## usb 固定
+    lsusb
+    sudo vim /etc/udev/rules.d/usb.rules
+    service udev reload
+    service udev restart
