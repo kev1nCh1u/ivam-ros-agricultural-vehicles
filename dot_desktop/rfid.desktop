@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Icon[en_US]=gnome-panel-launcher
+Name[en_US]=rfid
+
+Exec=bash -c 'source /opt/ros/melodic/setup.bash;source ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/devel/setup.bash;rosrun microsoft_rfid rfid_py.py /dev/agricultural_rfid 38400;$SHELL'
+
+Name=rfid
+Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/dot_desktop/img/14554624266871161.png
