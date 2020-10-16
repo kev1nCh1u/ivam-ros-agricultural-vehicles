@@ -9,9 +9,9 @@
     
     rosrun JoyStick joystick /dev/input/js0
     
-    rosrun microsoft_rfid rfid_py.py /dev/rfid 38400
+    rosrun microsoft_rfid rfid_py.py /dev/agricultural_rfid 38400
     
-    rosrun magnetic_rail mr_position_py.py /dev/magnetic_rail 115200
+    rosrun magnetic_rail mr_position_py.py /dev/agricultural_magnetic_rail 115200
     
     rosrun move_robot move_robot /dev/agricultural_arduino_nano 115200
     
@@ -49,9 +49,9 @@
     ls
 
     KERNEL=="ttyUSB*", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", MODE:="0777", SYMLINK+="agricultural_arduino_nano"
-    KERNELS=="1-1.3:1.0", SYMLINK+="magnetic_rail"
-    KERNELS=="1-2:1.0", SYMLINK+="rfid"
+    KERNELS=="1-1.1:1.0", SYMLINK+="agricultural_magnetic_rail"
+    KERNELS=="1-1.2:1.0", SYMLINK+="agricultural_rfid"
 
     nano Bus 001 Device 008: ID 0403:6001 Future Technology Devices International, Ltd FT232 USB-Serial (UART) I
-    mag KERNELS=="1-1.3:1.0"
-    rfid KERNELS=="1-2:1.0"
+    mag KERNELS=="1-1.1:1.0"
+    rfid KERNELS=="1-1.2:1.0"
