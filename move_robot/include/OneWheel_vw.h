@@ -196,7 +196,7 @@ onewheel_vw::onewheel_vw(char *dev_name, int Baudrate):Move_Robot(dev_name, Baud
   M_Navi_Pre_error = 0;
   M_Navi_error = 0;
 
-  M_Navi_Kp = 15;
+  M_Navi_Kp = 3; // kevin org:15
   M_Navi_Kd = 3;
   M_Navi_EV_L = 160; //cm
 

@@ -286,8 +286,8 @@ public:
 
     //Farm AGV Vision
     void Farm_AGV_Vision_Callback(const std_msgs::String &Vision_msg);
-    void Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg);
-    void Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg);
+    void Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg); // kevin
+    void Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg); // kevin
 
     // //Timer & Thread & SERIAL
     // //void timerCallback(const ros::TimerEvent& event);
@@ -636,7 +636,7 @@ Move_Robot::Move_Robot(char *dev_name, int Baudrate)
 
     //Farm AGV Subscriber
     Farm_AGV_Vision_Pose_Subscriber_ = node_.subscribe("Vision_Command", 5, &Move_Robot::Farm_AGV_Vision_Callback, this);
-    Farm_AGV_Magnetic_Offset_Subscriber_ = node_.subscribe("Magnetic_Command", 5, &Move_Robot::Farm_AGV_Magnetic_Callback, this);
+    Farm_AGV_Magnetic_Offset_Subscriber_ = node_.subscribe("mr_msg", 5, &Move_Robot::Farm_AGV_Magnetic_Callback, this); // kevin
     Farm_AGV_RFID_Subscriber_ = node_.subscribe("rfid_msg", 5, &Move_Robot::Farm_AGV_RFID_Callback, this);
 
     //Time sampling time
@@ -2051,24 +2051,25 @@ void Move_Robot::Farm_AGV_Vision_Callback(const std_msgs::String &Vision_msg)
     }
 }
 
-void Move_Robot::Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg)
+void Move_Robot::Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg) //kevin
 {
     Farm_AGV_RFID_Event = RFID_msg.data;
+    // std::cout << "############ " << Farm_AGV_RFID_Event << std::endl;
 
-    if (Farm_AGV_RFID_Event == "aadd0009010c0000430020006e")
+    if (Farm_AGV_RFID_Event == "aa770940080028206e") // aadd0009010c0000430020006e aa770940080028206e
     {
         Magnetic_Event_Trigger = true;
         Magnetic_IMU_Start_Value = EV_Pose_Vec[2];
         std::cout << "Magnetic Navigation Start" << std::endl;
     }
-    else if (Farm_AGV_RFID_Event == "aadd0009010c0000410010005c")
+    else if (Farm_AGV_RFID_Event == "aa770940080050105c") // aadd0009010c0000410010005c aa770940080050105c 
     {
         Magnetic_Event_Trigger = false;
         std::cout << "Magnetic Navigation End" << std::endl;
     }
 }
 
-void Move_Robot::Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg)
+void Move_Robot::Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg) //kevin
 {
     Magnetic_Offset = Magnetic_msg.offset; //cm
 }
@@ -2371,7 +2372,9 @@ void Move_Robot::EV_PreLoad_Path()
 
     std::fstream fin;
 
-    fin.open("/home/ivam/EV_ws/0709GPS_path.txt", std::fstream::in);
+    // fin.open("/home/ivam/EV_ws/0709GPS_path.txt", std::fstream::in);
+    std::string mapPath = TitlePath + "/0722GPS_path.txt"; // kevin
+    fin.open(mapPath, std::fstream::in);
     if (!fin.is_open())
     {
         ROS_INFO("Error: GPS_path is not opened!!");
