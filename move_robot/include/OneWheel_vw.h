@@ -198,7 +198,7 @@ onewheel_vw::onewheel_vw(char *dev_name, int Baudrate):Move_Robot(dev_name, Baud
 
   M_Navi_Kp = 3; // kevin org:15
   M_Navi_Kd = 3;
-  M_Navi_EV_L = 160; //cm
+  M_Navi_EV_L = 160; //cm 160 // kevin 
 
   std::cout<<"v_buf"<< v_buf<<std::endl;
   std::cout<<"onewheel_vw"<<std::endl;
@@ -382,7 +382,7 @@ void onewheel_vw::Magnetic_Navi()
     }
 
     std::cout<<"M_Navi_Output_Steering_Theta: "<<M_Navi_Output_Steering_Theta<<std::endl;
-    sendreceive.Package_OneWheel_encoder(0, M_Navi_Output_Steering_Theta,1,0,0, command); //for test V = 0
+    sendreceive.Package_OneWheel_encoder(300, M_Navi_Output_Steering_Theta,1,0,0, command); //for test V = 0 // kevin
     SendPackage(command);
   }
 
@@ -391,7 +391,6 @@ void onewheel_vw::Magnetic_Navi()
     sendreceive.Package_OneWheel_encoder(0, 0,1,0,1, command); //for test V = 0
     SendPackage(command);
   }
-
 
 }
 
@@ -3781,15 +3780,17 @@ std::cout<<"see 5  "<<std::endl;
       {
         V_avg = -1*V_avg;
       }
-
-    		float Send_EV_Velocity = V_avg_throttle * 600;
-        float Send_EV_Velocity_Neg = -V_avg_brake * 600;
+	
+		int velocity_min = 300; // kevin
+		int velocity_max = 600; // kevin
+    	float Send_EV_Velocity = V_avg_throttle * (velocity_max - velocity_min) + velocity_min; // kevin
+        float Send_EV_Velocity_Neg = -V_avg_brake * (velocity_max - velocity_min) + velocity_min;
     		if(Send_EV_Velocity >= 0 && Send_EV_Velocity_Neg >= 0)
     		{
     			std::vector<unsigned char> command;
-    			if(Send_EV_Velocity >= 600)
+    			if(Send_EV_Velocity >= velocity_max)
     			{
-    				Send_EV_Velocity = 600;
+    				Send_EV_Velocity = velocity_max;
     			}
     			sendreceive.Package_OneWheel_encoder(Send_EV_Velocity, Send_EV_Steering,1,0,0, command);
     			SendPackage(command);

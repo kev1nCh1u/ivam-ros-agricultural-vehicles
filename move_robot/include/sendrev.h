@@ -145,7 +145,7 @@ void sendrev::Package_IVAM_EV_Auto(float cmd_v, float cmd_w,int DriveMode,int Ma
     int steering_data = int(cmd_w * 3.0 *100.0) + 9000;
 
 
-    int HighByte_integer_v = (int(cmd_v)) / 255;
+    int HighByte_integer_v = (int(cmd_v)) / 255; // kevin
     int LowByte_integer_v  = (int(cmd_v)) % 255;
     //int HighByte_float_v   = float_v/256;
     //int LowByte_float_v    = float_v%256;
