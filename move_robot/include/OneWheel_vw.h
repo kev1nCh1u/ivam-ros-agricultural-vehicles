@@ -3782,7 +3782,7 @@ std::cout<<"see 5  "<<std::endl;
       }
 	
 		int velocity_min = 300; // kevin
-		int velocity_max = 600; // kevin
+		int velocity_max = 400; // kevin
     	float Send_EV_Velocity = V_avg_throttle * (velocity_max - velocity_min) + velocity_min; // kevin
         float Send_EV_Velocity_Neg = -V_avg_brake * (velocity_max - velocity_min) + velocity_min;
     		if(Send_EV_Velocity >= 0 && Send_EV_Velocity_Neg >= 0)
