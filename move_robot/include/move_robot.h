@@ -2054,7 +2054,6 @@ void Move_Robot::Farm_AGV_Vision_Callback(const std_msgs::String &Vision_msg)
 void Move_Robot::Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg) //kevin
 {
     Farm_AGV_RFID_Event = RFID_msg.data;
-    // std::cout << "############ " << Farm_AGV_RFID_Event << std::endl;
 
     if (Farm_AGV_RFID_Event == "aa770940080028206e") // aadd0009010c0000430020006e aa770940080028206e
     {
