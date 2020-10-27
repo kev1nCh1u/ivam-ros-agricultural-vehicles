@@ -138,10 +138,12 @@ void sendrev::Package_IVAM_EV_Auto(float cmd_v, float cmd_w,int DriveMode,int Ma
     //std::cout<<"cmd_v: "<< cmd_v << " cmd_w: " << cmd_w <<std::endl;
     std::vector<unsigned char> command;
     //cmd_w = -cmd_w;
-    if(cmd_w > 20.0)cmd_w = 20.0;
-    else if(cmd_w < -20.0)cmd_w = -20.0;
-    if(cmd_v > 650)cmd_v = 650;
+
+    if(cmd_w > 50)cmd_w = 50; // kevin
+    else if(cmd_w < -50)cmd_w = -50;
+    if(cmd_v > 400)cmd_v = 400;
     else if(cmd_v <= 0)cmd_v = 0;
+
     int steering_data = int(cmd_w * 3.0 *100.0) + 9000;
 
 
@@ -195,10 +197,11 @@ void sendrev::Package_IVAM_EV_Auto(float cmd_v, float cmd_w,int DriveMode,int Ma
 
    for(int i = 0; i < 10; i++)
    {
-    printf("%d\n",command[i]);
+    printf("%d ",command[i]); // kevin 讓它變一行
    }
+   printf("\n"); // kevin 讓它變一行
 
-   std::cout<<"=================Send================"<<std::endl;
+   std::cout<<"=================Send================"<<std::endl; // print info
 
 }
 
@@ -599,7 +602,7 @@ void sendrev::Package_Boling_smallgray(double &cmd_vl, double &cmd_vr,std::vecto
 
     std::vector<unsigned char> command;
 
-    std::cout<<"send_vl: "<<send_vl<<std::endl;
+    std::cout<<"send_vl: "<<send_vl<<std::endl; // print info
     std::cout<<"send_vr: "<<send_vr<<std::endl;
 
 

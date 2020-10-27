@@ -100,6 +100,7 @@ private:
 	float ini_way_theta;
 
 	float W_rw;
+	int W_rw_max; // kevin 搖桿最大角度 0.5
 	float V_rv;
 	float V_rev;
 	float delta;
@@ -117,6 +118,8 @@ private:
 
 	//Farm AGV
 	float M_Navi_Output_Steering_Theta; //Steering output (degree)
+	float M_Navi_Output_Steering_Throttle; // kevin 磁導軌速度 350
+	int M_Navi_Output_Steering_Theta; //Steering output (degree)
 	float M_Navi_Input_error;			//Steering error (degree)
 	float M_Navi_Pre_error;				//Steering pre-error (degree)
 	float M_Navi_error;
@@ -141,6 +144,7 @@ onewheel_vw::onewheel_vw(char *dev_name, int Baudrate) : Move_Robot(dev_name, Ba
 
 	//one wheel parameters
 	W_rw = 0;
+	W_rw_max = 0.5;
 	V_rv = 0;
 	V_rev = 0;
 	delta = 0;
@@ -178,13 +182,14 @@ onewheel_vw::onewheel_vw(char *dev_name, int Baudrate) : Move_Robot(dev_name, Ba
 	ini_way_theta = 0.0;
 
 	M_Navi_Output_Steering_Theta = 0;
+	M_Navi_Output_Steering_Throttle = 350;
 	M_Navi_Input_error = 0;
 	M_Navi_Pre_error = 0;
 	M_Navi_error = 0;
 
 	M_Navi_Kp = 3; // kevin org:15
 	M_Navi_Kd = 3;
-	M_Navi_EV_L = 160; //cm 160 // kevin
+	M_Navi_EV_L = 75; //cm 160 // 75
 
 	std::cout << "v_buf" << v_buf << std::endl;
 	std::cout << "onewheel_vw" << std::endl;
@@ -352,7 +357,7 @@ void onewheel_vw::Magnetic_Navi()
 		M_Navi_Output_Steering_Theta = M_Navi_Kp * M_Navi_error + M_Navi_Kd * (M_Navi_error - M_Navi_Pre_error);
 		M_Navi_Pre_error = M_Navi_error;
 
-		if (M_Navi_Output_Steering_Theta >= 20)
+		if (M_Navi_Output_Steering_Theta >= 20) // kevin
 		{
 			M_Navi_Output_Steering_Theta = 20;
 		}
@@ -362,7 +367,7 @@ void onewheel_vw::Magnetic_Navi()
 		}
 
 		std::cout << "M_Navi_Output_Steering_Theta: " << M_Navi_Output_Steering_Theta << std::endl;
-		sendreceive.Package_OneWheel_encoder(300, M_Navi_Output_Steering_Theta, 1, 0, 0, command); //for test V = 0 // kevin
+		sendreceive.Package_OneWheel_encoder(M_Navi_Output_Steering_Throttle, M_Navi_Output_Steering_Theta, 1, 0, 0, command); //for test V = 0 // kevin
 		SendPackage(command);
 	}
 
@@ -3616,20 +3621,21 @@ void onewheel_vw::joystick_move() // Important: jeff said this function is runni
 		//W_rw
 		float W_rw = ((sin(us) / L) * joystick_v) * 0.4;
 
-		if (fabs(W_rw) > 0.35)
+		if (fabs(W_rw) > W_rw_max) // kevin
 		{
 			if (W_rw > 0)
-				W_rw = 0.35;
+				W_rw = W_rw_max;
 			else
-				W_rw = -0.35;
+				W_rw = -W_rw_max;
 		}
 
-		float Send_EV_Steering = joystick_steering * 18;
+		int Send_EV_Steering_max = 50;
+		float Send_EV_Steering = joystick_steering * Send_EV_Steering_max; // kevin
 		Send_EV_Steering = -Send_EV_Steering;
-		if (Send_EV_Steering >= 18)
-			Send_EV_Steering = 18;
-		else if (Send_EV_Steering <= -18)
-			Send_EV_Steering = -18;
+		if (Send_EV_Steering >= Send_EV_Steering_max)
+			Send_EV_Steering = Send_EV_Steering_max;
+		else if (Send_EV_Steering <= -Send_EV_Steering_max)
+			Send_EV_Steering = -Send_EV_Steering_max;
 		//==============change=============
 
 		float V_avg_throttle = Pedal_Throttle_Value;
@@ -3644,9 +3650,9 @@ void onewheel_vw::joystick_move() // Important: jeff said this function is runni
 			V_avg = -1 * V_avg;
 		}
 
-		int velocity_min = 300;																	// kevin
-		int velocity_max = 400;																	// kevin
-		float Send_EV_Velocity = V_avg_throttle * (velocity_max - velocity_min) + velocity_min; // kevin
+		int velocity_min = 300;																	// kevin 搖桿不動速度 
+		int velocity_max = 400;																	// kevin 搖桿最高速度限制
+		float Send_EV_Velocity = V_avg_throttle * (velocity_max - velocity_min) + velocity_min;
 		float Send_EV_Velocity_Neg = -V_avg_brake * (velocity_max - velocity_min) + velocity_min;
 		if (Send_EV_Velocity >= 0 && Send_EV_Velocity_Neg >= 0)
 		{
