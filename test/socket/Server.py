@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import socket
-HOST = '127.0.0.1'
+# HOST = '127.0.0.1'
+HOST = '10.1.1.2'
 PORT = 8000
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
