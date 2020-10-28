@@ -302,42 +302,55 @@ void onewheel_vw::Update_EV_Pose()
 	EV_Pose_Publisher_.publish(a);
 }
 
-void onewheel_vw::Vision_Navi()
+void onewheel_vw::Vision_Navi() // kevin
 {
 	std::vector<unsigned char> command;
 
-	if (Farm_AGV_Vision_Event == "35") //Stright Forward Sign 35
+	if (Farm_AGV_Vision_Offset >= 50)
 	{
-		sendreceive.Package_OneWheel_encoder(400, 0, 1, 0, 0, command); //Stright Forward
-		std::cout << "Forward" << std::endl;
+		Farm_AGV_Vision_Offset = 50;
 	}
-	else if (Farm_AGV_Vision_Event == "39") //Turn Right 10dgr Sign  39
+	else if (Farm_AGV_Vision_Offset <= -50)
 	{
-		sendreceive.Package_OneWheel_encoder(400, 10, 1, 0, 0, command); //Turn Left 10dgr
-		std::cout << "Turn Left 10 Dgr" << std::endl;
-	}
-	else if (Farm_AGV_Vision_Event == "19") //Turn Right Sign 19
-	{
-		sendreceive.Package_OneWheel_encoder(400, 20, 1, 0, 0, command); //Turn Left 20dgr
-		std::cout << "Turn Left 20 Dgr" << std::endl;
-	}
-	else if (Farm_AGV_Vision_Event == "38") //Turn Right Sign 10dgr 38
-	{
-		sendreceive.Package_OneWheel_encoder(400, -10, 1, 0, 0, command); //Turn Right 10dgr
-		std::cout << "Turn Right 10 Dgr" << std::endl;
-	}
-	else if (Farm_AGV_Vision_Event == "20") //Turn Right Sign 20
-	{
-		sendreceive.Package_OneWheel_encoder(400, 10, 1, 0, 0, command); //Turn Right 20dgr
-		std::cout << "Turn Right 20 Dgr" << std::endl;
-	}
-	else if (Farm_AGV_Vision_Event == "17") //Stop Sign 17
-	{
-		sendreceive.Package_OneWheel_encoder(0, 0, 1, 0, 1, command); //Stop
-		std::cout << "Stop" << std::endl;
+		Farm_AGV_Vision_Offset = -50;
 	}
 
+	std::cout << "Farm_AGV_Vision_Offset: " << Farm_AGV_Vision_Offset << std::endl;
+	sendreceive.Package_OneWheel_encoder(350), Farm_AGV_Vision_Offset, 1, 0, 0, command);
 	SendPackage(command);
+
+	// if (Farm_AGV_Vision_Event == "35") //Stright Forward Sign 35
+	// {
+	// 	sendreceive.Package_OneWheel_encoder(400, 0, 1, 0, 0, command); //Stright Forward
+	// 	std::cout << "Forward" << std::endl;
+	// }
+	// else if (Farm_AGV_Vision_Event == "39") //Turn Right 10dgr Sign  39
+	// {
+	// 	sendreceive.Package_OneWheel_encoder(400, 10, 1, 0, 0, command); //Turn Left 10dgr
+	// 	std::cout << "Turn Left 10 Dgr" << std::endl;
+	// }
+	// else if (Farm_AGV_Vision_Event == "19") //Turn Right Sign 19
+	// {
+	// 	sendreceive.Package_OneWheel_encoder(400, 20, 1, 0, 0, command); //Turn Left 20dgr
+	// 	std::cout << "Turn Left 20 Dgr" << std::endl;
+	// }
+	// else if (Farm_AGV_Vision_Event == "38") //Turn Right Sign 10dgr 38
+	// {
+	// 	sendreceive.Package_OneWheel_encoder(400, -10, 1, 0, 0, command); //Turn Right 10dgr
+	// 	std::cout << "Turn Right 10 Dgr" << std::endl;
+	// }
+	// else if (Farm_AGV_Vision_Event == "20") //Turn Right Sign 20
+	// {
+	// 	sendreceive.Package_OneWheel_encoder(400, 10, 1, 0, 0, command); //Turn Right 20dgr
+	// 	std::cout << "Turn Right 20 Dgr" << std::endl;
+	// }
+	// else if (Farm_AGV_Vision_Event == "17") //Stop Sign 17
+	// {
+	// 	sendreceive.Package_OneWheel_encoder(0, 0, 1, 0, 1, command); //Stop
+	// 	std::cout << "Stop" << std::endl;
+	// }
+
+	// SendPackage(command);
 }
 
 void onewheel_vw::Magnetic_Navi()
@@ -357,13 +370,13 @@ void onewheel_vw::Magnetic_Navi()
 		M_Navi_Output_Steering_Theta = M_Navi_Kp * M_Navi_error + M_Navi_Kd * (M_Navi_error - M_Navi_Pre_error);
 		M_Navi_Pre_error = M_Navi_error;
 
-		if (M_Navi_Output_Steering_Theta >= 20) // kevin
+		if (M_Navi_Output_Steering_Theta >= 50) // kevin mr 角度上限
 		{
-			M_Navi_Output_Steering_Theta = 20;
+			M_Navi_Output_Steering_Theta = 50;
 		}
-		else if (M_Navi_Output_Steering_Theta <= -20)
+		else if (M_Navi_Output_Steering_Theta <= -50)
 		{
-			M_Navi_Output_Steering_Theta = -20;
+			M_Navi_Output_Steering_Theta = -50;
 		}
 
 		std::cout << "M_Navi_Output_Steering_Theta: " << M_Navi_Output_Steering_Theta << std::endl;

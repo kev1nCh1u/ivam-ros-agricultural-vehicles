@@ -285,7 +285,7 @@ public:
     void Fix_IMU(const geometry_msgs::PoseStamped EV_Pose_msg, Eigen::Vector3f &EV_Pose_Vec);
 
     //Farm AGV Vision
-    void Farm_AGV_Vision_Callback(const std_msgs::String &Vision_msg);
+    void Farm_AGV_Vision_Callback(const std_msgs::String &tcp_msg);
     void Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg); // kevin
     void Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg); // kevin
 
@@ -488,6 +488,7 @@ protected:
 
     //Farm AGV Visiual Direction indicator
     std::string Farm_AGV_Vision_Event;
+    float Farm_AGV_Vision_Offset; // kevin
     bool Vision_Event_Trigger;
 
     //Farm AGV Magnetic Offset indicator
@@ -635,7 +636,7 @@ Move_Robot::Move_Robot(char *dev_name, int Baudrate)
     EV_Pose_Publisher_ = node_.advertise<geometry_msgs::PoseStamped>("Draw_EV_Pose", 1000);
 
     //Farm AGV Subscriber
-    Farm_AGV_Vision_Pose_Subscriber_ = node_.subscribe("Vision_Command", 5, &Move_Robot::Farm_AGV_Vision_Callback, this);
+    Farm_AGV_Vision_Pose_Subscriber_ = node_.subscribe("tcp_msg", 5, &Move_Robot::Farm_AGV_Vision_Callback, this); // kevin
     Farm_AGV_Magnetic_Offset_Subscriber_ = node_.subscribe("mr_msg", 5, &Move_Robot::Farm_AGV_Magnetic_Callback, this); // kevin
     Farm_AGV_RFID_Subscriber_ = node_.subscribe("rfid_msg", 5, &Move_Robot::Farm_AGV_RFID_Callback, this);
 
@@ -2035,20 +2036,25 @@ void Move_Robot::EV_Pose_Callback(const geometry_msgs::PoseStamped &EV_Pose_msg)
     //STATE_Publisher_.publish(msg1);
 }
 
-void Move_Robot::Farm_AGV_Vision_Callback(const std_msgs::String &Vision_msg)
+void Move_Robot::Farm_AGV_Vision_Callback(const std_msgs::String &tcp_msg) // kevin
 {
-    Farm_AGV_Vision_Event = Vision_msg.data;
+    Farm_AGV_Vision_Event = tcp_msg.data;
+    std::cout << "Farm_AGV_Vision_Event:" << Farm_AGV_Vision_Event << std::endl;
+    
+    float Farm_AGV_Vision_Offset = std::stof(Farm_AGV_Vision_Event);
 
-    if (Farm_AGV_Vision_Event == "12") //Start Sign -> 12
-    {
-        Vision_Event_Trigger = true;
-        std::cout << "Vision Navigation Start" << std::endl;
-    }
-    else if (Farm_AGV_Vision_Event == "13") //End Sign -> 13
-    {
-        Vision_Event_Trigger = false;
-        std::cout << "Vision Navigation End" << std::endl;
-    }
+    Vision_Event_Trigger = true;
+
+    // if (Farm_AGV_Vision_Event == "12") //Start Sign -> 12
+    // {
+    //     Vision_Event_Trigger = true;
+    //     std::cout << "Vision Navigation Start" << std::endl;
+    // }
+    // else if (Farm_AGV_Vision_Event == "13") //End Sign -> 13
+    // {
+    //     Vision_Event_Trigger = false;
+    //     std::cout << "Vision Navigation End" << std::endl;
+    // }
 }
 
 void Move_Robot::Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg) //kevin
