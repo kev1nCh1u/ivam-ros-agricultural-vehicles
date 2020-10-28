@@ -5,7 +5,7 @@ Terminal=true
 Icon[en_US]=gnome-panel-launcher
 Name[en_US]=catkin_make
 
-Exec=bash -c 'source /opt/ros/melodic/setup.bash;source ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/devel/setup.bash;cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws;catkin_make;$SHELL'
+Exec=bash -c 'source /opt/ros/melodic/setup.bash;cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws;source devel/setup.bash;catkin_make;$SHELL'
 
 Name=catkin_make
 Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/dot_desktop/img/14554624266871161.png

@@ -228,8 +228,8 @@ void RevProcess(double receive_period)
         file.open("GPS_path.txt" , std::fstream::app);
         double Display_lat = 0;
         double Display_lon = 0;
-        double Center_Lat = 2500.78025;
-        double Center_Lon = 12132.48450;
+        double Center_Lat = 2500.67057;
+        double Center_Lon = 12132.38304;
 
         //Publisher
         ros::NodeHandle gps;
@@ -275,8 +275,9 @@ void RevProcess(double receive_period)
                             int found = str2.find(",");
                             gps_data_buf.push_back(str2.substr(0, found));
                             str2 = str2.substr(found + 1);
-                        }    
+                        }
                         gps_data_buf.push_back(str2);//GNGLL: gps_data_buf[1] is lat and gps_data_buf[3] is lon , GNRMC:gps_data_buf[3] is lat and gps_data_buf[5] is lon
+                        // std::cout << gps_data_buf[3] << " " << gps_data_buf[5] << std::endl;
                         Affine_lat = strtold(gps_data_buf[3].data(),NULL) - Center_Lat; 
                         Affine_lon = strtold(gps_data_buf[5].data(),NULL) - Center_Lon;
                         Affine_lat_m = (Affine_lat/60) * scale;
@@ -288,7 +289,7 @@ void RevProcess(double receive_period)
                         EV_Pose_msg.pose.position.x = -Affine_lat_m;
                         EV_Pose_msg.pose.position.y = Affine_lon_m;
                         //std::cout<<"lat:  "<< Display_lat << "  lon: "<< Display_lon <<std::endl;
-                        std::cout<<"lat:  "<< -Affine_lat_m << "  lon: "<< Affine_lon_m <<std::endl;
+                        // std::cout<<"lat:  "<< -Affine_lat_m << "  lon: "<< Affine_lon_m <<std::endl;
                         file << -Affine_lat_m << " " << Affine_lon_m << std::endl;
                         //file << "aaaa" << "\n";
                         //std::cout<<"========================================"<<std::endl;

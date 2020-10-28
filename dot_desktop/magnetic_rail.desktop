@@ -5,7 +5,7 @@ Terminal=true
 Icon[en_US]=gnome-panel-launcher
 Name[en_US]=magnetic_rail
 
-Exec=bash -c 'source /opt/ros/melodic/setup.bash;source ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/devel/setup.bash;rosrun magnetic_rail mr_position_py.py /dev/agricultural_magnetic_rail 115200;$SHELL'
+Exec=bash -c 'source /opt/ros/melodic/setup.bash;cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws;source devel/setup.bash;rosrun magnetic_rail mr_position_py.py /dev/agricultural_magnetic_rail 115200;$SHELL'
 
 Name=magnetic_rail
 Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/dot_desktop/img/14554624266871161.png

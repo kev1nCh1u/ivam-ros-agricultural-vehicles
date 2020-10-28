@@ -118,8 +118,6 @@ private:
 
 	//Farm AGV
 	float M_Navi_Output_Steering_Theta; //Steering output (degree)
-	float M_Navi_Output_Steering_Throttle; // kevin 磁導軌速度 350
-	int M_Navi_Output_Steering_Theta; //Steering output (degree)
 	float M_Navi_Input_error;			//Steering error (degree)
 	float M_Navi_Pre_error;				//Steering pre-error (degree)
 	float M_Navi_error;
@@ -182,12 +180,12 @@ onewheel_vw::onewheel_vw(char *dev_name, int Baudrate) : Move_Robot(dev_name, Ba
 	ini_way_theta = 0.0;
 
 	M_Navi_Output_Steering_Theta = 0;
-	M_Navi_Output_Steering_Throttle = 350;
 	M_Navi_Input_error = 0;
 	M_Navi_Pre_error = 0;
 	M_Navi_error = 0;
 
-	M_Navi_Kp = 3; // kevin org:15
+	// 磁導軌 pid 運動學
+	M_Navi_Kp = 7.5; // kevin org:15
 	M_Navi_Kd = 3;
 	M_Navi_EV_L = 75; //cm 160 // 75
 
@@ -207,6 +205,9 @@ onewheel_vw::onewheel_vw(char *dev_name, int Baudrate) : Move_Robot(dev_name, Ba
 	receive_Battery_thread_ = new boost::thread(boost::bind(&onewheel_vw::RevProcess_Battery, this, 0.1));
 	receive_thread_ = new boost::thread(boost::bind(&onewheel_vw::RevProcess, this, 0.01));
 	control_timer = node_.createTimer(ros::Duration(time_sample), &onewheel_vw::timerCallback, this);
+
+	sleep(3); // kevin wait to check
+	std::cout << "start..." << std::endl;
 }
 onewheel_vw::~onewheel_vw()
 {
@@ -268,8 +269,8 @@ void onewheel_vw::timerCallback(const ros::TimerEvent &event)
 		isReveice_joystick = false;
 		LaserMiss_send = false;
 	}
-	else
-	{ // kevin
+	else // kevin 布林條件式 切換導航模式
+	{
 		if (Vision_Event_Trigger == false && Magnetic_Event_Trigger == false)
 		{
 			State_Machine(p_state_);
@@ -302,7 +303,7 @@ void onewheel_vw::Update_EV_Pose()
 	EV_Pose_Publisher_.publish(a);
 }
 
-void onewheel_vw::Vision_Navi() // kevin
+void onewheel_vw::Vision_Navi() // kevin 影像導航
 {
 	std::vector<unsigned char> command;
 
@@ -316,7 +317,7 @@ void onewheel_vw::Vision_Navi() // kevin
 	}
 
 	std::cout << "Farm_AGV_Vision_Offset: " << Farm_AGV_Vision_Offset << std::endl;
-	sendreceive.Package_OneWheel_encoder(350), Farm_AGV_Vision_Offset, 1, 0, 0, command);
+	sendreceive.Package_OneWheel_encoder(335, Farm_AGV_Vision_Offset, 1, 0, 0, command);
 	SendPackage(command);
 
 	// if (Farm_AGV_Vision_Event == "35") //Stright Forward Sign 35
@@ -380,7 +381,7 @@ void onewheel_vw::Magnetic_Navi()
 		}
 
 		std::cout << "M_Navi_Output_Steering_Theta: " << M_Navi_Output_Steering_Theta << std::endl;
-		sendreceive.Package_OneWheel_encoder(M_Navi_Output_Steering_Throttle, M_Navi_Output_Steering_Theta, 1, 0, 0, command); //for test V = 0 // kevin
+		sendreceive.Package_OneWheel_encoder(335, M_Navi_Output_Steering_Theta, 1, 0, 0, command); //for test V = 0 // kevin 磁導封包
 		SendPackage(command);
 	}
 

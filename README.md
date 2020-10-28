@@ -14,6 +14,8 @@
     rosrun magnetic_rail mr_position_py.py /dev/agricultural_magnetic_rail 115200
     
     rosrun move_robot move_robot /dev/agricultural_arduino_nano 115200
+
+    rosrun kevin_tcp tcp_server_py.py
     
     rosrun rviz rviz
 
@@ -55,3 +57,8 @@
     nano Bus 001 Device 008: ID 0403:6001 Future Technology Devices International, Ltd FT232 USB-Serial (UART) I
     mag KERNELS=="1-1.1:1.0"
     rfid KERNELS=="1-1.2:1.0"
+
+## 問題
+- 轉彎速度慢
+- 沒磁導拿最後的值繼續灣
+- gps 地圖吃不到

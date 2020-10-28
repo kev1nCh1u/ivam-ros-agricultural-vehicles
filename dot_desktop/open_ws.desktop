@@ -3,9 +3,9 @@ Version=1.0
 Type=Application
 Terminal=true
 Icon[en_US]=gnome-panel-launcher
-Name[en_US]=rviz
+Name[en_US]=open_ws
 
-Exec=bash -c 'source /opt/ros/melodic/setup.bash;cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws;source devel/setup.bash;rosrun rviz rviz;$SHELL'
+Exec=bash -c 'source /opt/ros/melodic/setup.bash;cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws;source devel/setup.bash;$SHELL'
 
-Name=rviz
+Name=open_ws
 Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/dot_desktop/img/14554624266871161.png

@@ -284,10 +284,10 @@ public:
     //EV IMU Adjustment
     void Fix_IMU(const geometry_msgs::PoseStamped EV_Pose_msg, Eigen::Vector3f &EV_Pose_Vec);
 
-    //Farm AGV Vision
+    //Farm AGV Vision // kevin change msg
     void Farm_AGV_Vision_Callback(const std_msgs::String &tcp_msg);
-    void Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg); // kevin
-    void Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg); // kevin
+    void Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg);
+    void Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg);
 
     // //Timer & Thread & SERIAL
     // //void timerCallback(const ros::TimerEvent& event);
@@ -488,7 +488,7 @@ protected:
 
     //Farm AGV Visiual Direction indicator
     std::string Farm_AGV_Vision_Event;
-    float Farm_AGV_Vision_Offset; // kevin
+    float Farm_AGV_Vision_Offset; // kevin 影像偏移量
     bool Vision_Event_Trigger;
 
     //Farm AGV Magnetic Offset indicator
@@ -635,9 +635,9 @@ Move_Robot::Move_Robot(char *dev_name, int Baudrate)
     //EV Publisher
     EV_Pose_Publisher_ = node_.advertise<geometry_msgs::PoseStamped>("Draw_EV_Pose", 1000);
 
-    //Farm AGV Subscriber
-    Farm_AGV_Vision_Pose_Subscriber_ = node_.subscribe("tcp_msg", 5, &Move_Robot::Farm_AGV_Vision_Callback, this); // kevin
-    Farm_AGV_Magnetic_Offset_Subscriber_ = node_.subscribe("mr_msg", 5, &Move_Robot::Farm_AGV_Magnetic_Callback, this); // kevin
+    //Farm AGV Subscriber // kevin change msg
+    Farm_AGV_Vision_Pose_Subscriber_ = node_.subscribe("tcp_msg", 5, &Move_Robot::Farm_AGV_Vision_Callback, this);
+    Farm_AGV_Magnetic_Offset_Subscriber_ = node_.subscribe("mr_msg", 5, &Move_Robot::Farm_AGV_Magnetic_Callback, this);
     Farm_AGV_RFID_Subscriber_ = node_.subscribe("rfid_msg", 5, &Move_Robot::Farm_AGV_RFID_Callback, this);
 
     //Time sampling time
@@ -2041,7 +2041,7 @@ void Move_Robot::Farm_AGV_Vision_Callback(const std_msgs::String &tcp_msg) // ke
     Farm_AGV_Vision_Event = tcp_msg.data;
     std::cout << "Farm_AGV_Vision_Event:" << Farm_AGV_Vision_Event << std::endl;
     
-    float Farm_AGV_Vision_Offset = std::stof(Farm_AGV_Vision_Event);
+    Farm_AGV_Vision_Offset = std::stof(Farm_AGV_Vision_Event);
 
     Vision_Event_Trigger = true;
 
@@ -2076,6 +2076,12 @@ void Move_Robot::Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg) //kevi
 
 void Move_Robot::Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg) //kevin
 {
+
+    //////// testing with out rfid //////////////
+    Magnetic_Event_Trigger = true;
+    Magnetic_IMU_Start_Value = EV_Pose_Vec[2];
+    //////////////////////////////
+
     Magnetic_Offset = Magnetic_msg.offset; //cm
 }
 
@@ -2378,16 +2384,18 @@ void Move_Robot::EV_PreLoad_Path()
     std::fstream fin;
 
     // fin.open("/home/ivam/EV_ws/0709GPS_path.txt", std::fstream::in);
-    std::string mapPath = TitlePath + "/0722GPS_path.txt"; // kevin
+    std::string mapPath = TitlePath + "/GPS_path_1028.txt"; // kevin change map path
+    std::cout << "load map:" << mapPath << std::endl;
     fin.open(mapPath, std::fstream::in);
     if (!fin.is_open())
     {
-        ROS_INFO("Error: GPS_path is not opened!!");
+        ROS_INFO("Error: GPS_path map file is not opened!!");
+        sleep(10); // kevin wait to check
         //return false;
     }
     else
     {
-        ROS_INFO("the map file is opened!!");
+        ROS_INFO("GPS_path map file is opened!!");
 
         float i;
         while (fin >> i)
