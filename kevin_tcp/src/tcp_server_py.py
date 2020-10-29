@@ -4,15 +4,19 @@
 import rospy
 from std_msgs.msg import String
 
-import socket
-HOST = '127.0.0.1'
-# HOST = '10.1.1.2'
-PORT = 8000
+import serial
+import time
+import sys
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
-server.bind((HOST, PORT))
-server.listen(10)
+import socket
+
+# HOST = '127.0.0.1'
+# PORT = 8000
+
+# server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# server.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+# server.bind((HOST, PORT))
+# server.listen(10)
 
 def tcpFuc():
     conn, addr = server.accept()
@@ -39,6 +43,25 @@ def tcp_server():
         # rate.sleep()
 
 if __name__ == '__main__':
+    try:
+        input_argv = sys.argv
+        input_id = input_argv[1]
+        input_port = input_argv[2]
+        print('====== input setting ======')
+    except:
+        input_id = "127.0.0.1" # 10.1.1.2
+        input_port = "8000"
+        print('====== defalt setting ======')
+    print("port: " + input_id)
+    print("baudrate: " + input_port)
+    print('=========================')
+
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+    server.bind((input_id, int(input_port)))
+    server.listen(10)
+    time.sleep(1)
+
     try:
         tcp_server()
     except rospy.ROSInterruptException:

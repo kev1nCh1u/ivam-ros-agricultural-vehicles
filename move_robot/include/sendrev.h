@@ -139,7 +139,7 @@ void sendrev::Package_IVAM_EV_Auto(float cmd_v, float cmd_w,int DriveMode,int Ma
     std::vector<unsigned char> command;
     //cmd_w = -cmd_w;
 
-    if(cmd_w > 50)cmd_w = 50; // kevin
+    if(cmd_w > 50)cmd_w = 50; // kevin limit
     else if(cmd_w < -50)cmd_w = -50;
     if(cmd_v > 400)cmd_v = 400;
     else if(cmd_v <= 0)cmd_v = 0;

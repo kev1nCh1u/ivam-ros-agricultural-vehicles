@@ -19,6 +19,10 @@
     
     rosrun rviz rviz
 
+    rosrun GPS_pkg GPS_ /dev/ttyUSB2 38400
+
+    rosrun GPS_pkg IMU_ /dev/ttyACM0 115200
+
 ## 啟動步驟
 - open rviz
 - load map 搖桿back

@@ -2390,7 +2390,6 @@ void Move_Robot::EV_PreLoad_Path()
     if (!fin.is_open())
     {
         ROS_INFO("Error: GPS_path map file is not opened!!");
-        sleep(10); // kevin wait to check
         //return false;
     }
     else
@@ -2399,7 +2398,8 @@ void Move_Robot::EV_PreLoad_Path()
 
         float i;
         while (fin >> i)
-        { //std::cout<<"x   "<<i<<std::endl;
+        { 
+            //std::cout<<"x   "<<i<<std::endl;
 
             Eigen::Vector3f p;
             p.x() = i;
@@ -2414,6 +2414,7 @@ void Move_Robot::EV_PreLoad_Path()
         }
         ROS_INFO("The map has been loaded");
     }
+    sleep(3); // kevin wait to check
     fin.close();
 
     //std::cout<<"size "<<EV_Path_Subpoint.sub_missonPath_subPoint.size()<<std::endl;
