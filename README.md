@@ -17,7 +17,7 @@
 
     rosrun kevin_tcp tcp_server_py.py
     
-    rosrun rviz rviz
+    rosrun rviz rviz -d /home/user/Desktop/Farm_AGV_MPC_0929_ws/src/agricultural_vehicles_rviz.rviz
 
     rosrun GPS_pkg GPS_ /dev/ttyUSB2 38400
 
@@ -64,5 +64,5 @@
 
 ## 問題
 - 轉彎速度慢
-- 沒磁導拿最後的值繼續灣
-- gps 地圖吃不到
+- 沒磁導拿最後的值繼續灣 -> !=0
+- gps 地圖吃不到 -> marker

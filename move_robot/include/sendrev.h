@@ -135,14 +135,15 @@ void sendrev::RevProcess_IVAM_Car_vw(std::vector<unsigned char> &rev_buf,float &
 
 void sendrev::Package_IVAM_EV_Auto(float cmd_v, float cmd_w,int DriveMode,int ManualMode,int BrakeSign, std::vector<unsigned char> &return_cmd)
 {
-    //std::cout<<"cmd_v: "<< cmd_v << " cmd_w: " << cmd_w <<std::endl;
     std::vector<unsigned char> command;
     //cmd_w = -cmd_w;
 
-    if(cmd_w > 50)cmd_w = 50; // kevin limit
-    else if(cmd_w < -50)cmd_w = -50;
-    if(cmd_v > 400)cmd_v = 400;
-    else if(cmd_v <= 0)cmd_v = 0;
+    // if(cmd_w > 50)cmd_w = 50; // kevin limit
+    // else if(cmd_w < -50)cmd_w = -50;
+    // if(cmd_v > 400)cmd_v = 400;
+    // else if(cmd_v <= 0)cmd_v = 0;
+
+    std::cout<<"cmd_v: "<< cmd_v << " cmd_w: " << cmd_w <<std::endl;
 
     int steering_data = int(cmd_w * 3.0 *100.0) + 9000;
 

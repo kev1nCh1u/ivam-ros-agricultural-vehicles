@@ -2082,7 +2082,10 @@ void Move_Robot::Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic
     Magnetic_IMU_Start_Value = EV_Pose_Vec[2];
     //////////////////////////////
 
-    Magnetic_Offset = Magnetic_msg.offset; //cm
+    if(Magnetic_msg.offset != 0){
+        Magnetic_Offset = Magnetic_msg.offset; //cm
+    }
+    
 }
 
 void Move_Robot::Fix_IMU(const geometry_msgs::PoseStamped EV_Pose_msg, Eigen::Vector3f &EV_Pose_Vec)

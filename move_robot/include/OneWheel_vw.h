@@ -100,7 +100,6 @@ private:
 	float ini_way_theta;
 
 	float W_rw;
-	int W_rw_max; // kevin 搖桿最大角度 0.5
 	float V_rv;
 	float V_rev;
 	float delta;
@@ -126,6 +125,13 @@ private:
 	float M_Navi_IMU_Error; //in radian
 
 	float M_Navi_EV_L; //axle length(250cm) + trailer length(20cm)
+
+	// keivn config
+	int v_min = 300; // kevin 最小速度 300
+	int v_max = 400; // kevin 最大速度 400
+	int w_max = 50; // kevin 最大角度 50
+	int v_navi = 335; // kevin 導航速度 335
+	float Vision_Navi_Kp = 1; // kevin 影像 kp 1
 };
 onewheel_vw::onewheel_vw(char *dev_name, int Baudrate) : Move_Robot(dev_name, Baudrate)
 {
@@ -142,7 +148,6 @@ onewheel_vw::onewheel_vw(char *dev_name, int Baudrate) : Move_Robot(dev_name, Ba
 
 	//one wheel parameters
 	W_rw = 0;
-	W_rw_max = 0.5;
 	V_rv = 0;
 	V_rev = 0;
 	delta = 0;
@@ -306,18 +311,24 @@ void onewheel_vw::Update_EV_Pose()
 void onewheel_vw::Vision_Navi() // kevin 影像導航
 {
 	std::vector<unsigned char> command;
+	float Vision_Navi_error;
+	float vision_Steering_Theta;
 
-	if (Farm_AGV_Vision_Offset >= 50)
+	Vision_Navi_error = Farm_AGV_Vision_Offset;
+
+	vision_Steering_Theta = Vision_Navi_Kp * Vision_Navi_error;
+
+	if (vision_Steering_Theta >= w_max)
 	{
-		Farm_AGV_Vision_Offset = 50;
+		vision_Steering_Theta = w_max;
 	}
-	else if (Farm_AGV_Vision_Offset <= -50)
+	else if (vision_Steering_Theta <= -w_max)
 	{
-		Farm_AGV_Vision_Offset = -50;
+		vision_Steering_Theta = -w_max;
 	}
 
-	std::cout << "Farm_AGV_Vision_Offset: " << Farm_AGV_Vision_Offset << std::endl;
-	sendreceive.Package_OneWheel_encoder(335, Farm_AGV_Vision_Offset, 1, 0, 0, command);
+	std::cout << "vision_Steering_Theta: " << vision_Steering_Theta << std::endl;
+	sendreceive.Package_OneWheel_encoder(v_navi, vision_Steering_Theta, 1, 0, 0, command);
 	SendPackage(command);
 
 	// if (Farm_AGV_Vision_Event == "35") //Stright Forward Sign 35
@@ -371,17 +382,17 @@ void onewheel_vw::Magnetic_Navi()
 		M_Navi_Output_Steering_Theta = M_Navi_Kp * M_Navi_error + M_Navi_Kd * (M_Navi_error - M_Navi_Pre_error);
 		M_Navi_Pre_error = M_Navi_error;
 
-		if (M_Navi_Output_Steering_Theta >= 50) // kevin mr 角度上限
+		if (M_Navi_Output_Steering_Theta >= w_max) // kevin mr 角度上限
 		{
-			M_Navi_Output_Steering_Theta = 50;
+			M_Navi_Output_Steering_Theta = w_max;
 		}
-		else if (M_Navi_Output_Steering_Theta <= -50)
+		else if (M_Navi_Output_Steering_Theta <= -w_max)
 		{
-			M_Navi_Output_Steering_Theta = -50;
+			M_Navi_Output_Steering_Theta = -w_max;
 		}
 
 		std::cout << "M_Navi_Output_Steering_Theta: " << M_Navi_Output_Steering_Theta << std::endl;
-		sendreceive.Package_OneWheel_encoder(335, M_Navi_Output_Steering_Theta, 1, 0, 0, command); //for test V = 0 // kevin 磁導封包
+		sendreceive.Package_OneWheel_encoder(v_navi, M_Navi_Output_Steering_Theta, 1, 0, 0, command); //for test V = 0 // kevin 磁導封包
 		SendPackage(command);
 	}
 
@@ -3635,21 +3646,20 @@ void onewheel_vw::joystick_move() // Important: jeff said this function is runni
 		//W_rw
 		float W_rw = ((sin(us) / L) * joystick_v) * 0.4;
 
-		if (fabs(W_rw) > W_rw_max) // kevin
+		if (fabs(W_rw) > 0.5) // kevin
 		{
 			if (W_rw > 0)
-				W_rw = W_rw_max;
+				W_rw = 0.5;
 			else
-				W_rw = -W_rw_max;
+				W_rw = -0.5;
 		}
 
-		int Send_EV_Steering_max = 50;
-		float Send_EV_Steering = joystick_steering * Send_EV_Steering_max; // kevin
+		float Send_EV_Steering = joystick_steering * w_max; // kevin 搖桿最大角度限制
 		Send_EV_Steering = -Send_EV_Steering;
-		if (Send_EV_Steering >= Send_EV_Steering_max)
-			Send_EV_Steering = Send_EV_Steering_max;
-		else if (Send_EV_Steering <= -Send_EV_Steering_max)
-			Send_EV_Steering = -Send_EV_Steering_max;
+		if (Send_EV_Steering >= w_max)
+			Send_EV_Steering = w_max;
+		else if (Send_EV_Steering <= -w_max)
+			Send_EV_Steering = -w_max;
 		//==============change=============
 
 		float V_avg_throttle = Pedal_Throttle_Value;
@@ -3664,20 +3674,18 @@ void onewheel_vw::joystick_move() // Important: jeff said this function is runni
 			V_avg = -1 * V_avg;
 		}
 
-		int velocity_min = 300;																	// kevin 搖桿不動速度 
-		int velocity_max = 400;																	// kevin 搖桿最高速度限制
-		float Send_EV_Velocity = V_avg_throttle * (velocity_max - velocity_min) + velocity_min;
-		float Send_EV_Velocity_Neg = -V_avg_brake * (velocity_max - velocity_min) + velocity_min;
+		float Send_EV_Velocity = V_avg_throttle * (v_max - v_min) + v_min; // kevin 搖桿速度map
+		float Send_EV_Velocity_Neg = -V_avg_brake * (v_max - v_min) + v_min;
 		if (Send_EV_Velocity >= 0 && Send_EV_Velocity_Neg >= 0)
 		{
 			std::vector<unsigned char> command;
-			if (Send_EV_Velocity >= velocity_max)
+			if (Send_EV_Velocity > v_max)
 			{
-				Send_EV_Velocity = velocity_max;
+				Send_EV_Velocity = v_max;
 			}
 			sendreceive.Package_OneWheel_encoder(Send_EV_Velocity, Send_EV_Steering, 1, 0, 0, command);
 			SendPackage(command);
-			std::cout << "Send_EV_Velocity: " << Send_EV_Velocity << "Send_EV_Steering: " << Send_EV_Steering << std::endl;
+			std::cout << "Send_EV_Velocity: " << Send_EV_Velocity << " Send_EV_Steering: " << Send_EV_Steering << std::endl;
 		}
 		else if (Send_EV_Velocity >= 0 && Send_EV_Velocity_Neg < 0)
 		{
