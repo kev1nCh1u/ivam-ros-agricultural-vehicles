@@ -316,9 +316,9 @@ void onewheel_vw::Vision_Navi() // kevin 影像導航
 
 	Vision_Navi_error = Farm_AGV_Vision_Offset;
 
-	vision_Steering_Theta = Vision_Navi_Kp * Vision_Navi_error;
+	vision_Steering_Theta = Vision_Navi_Kp * Vision_Navi_error; //
 
-	if (vision_Steering_Theta >= w_max)
+	if (vision_Steering_Theta >= w_max) // 最大限制
 	{
 		vision_Steering_Theta = w_max;
 	}
@@ -373,9 +373,10 @@ void onewheel_vw::Magnetic_Navi()
 	{
 		//M_Navi_IMU_Error = Magnetic_IMU_Start_Value - EV_Pose_Vec[2]; //in radian
 		//M_Navi_Input_error = atan(M_Navi_EV_L / Magnetic_Offset) + M_Navi_IMU_Error;
-		M_Navi_Input_error = atan(Magnetic_Offset / M_Navi_EV_L);
 
-		M_Navi_Input_error = M_Navi_Input_error * 180 / M_PI; // degree
+		// kevin onewheel Kinematics
+		// M_Navi_Input_error = atan(Magnetic_Offset / M_Navi_EV_L);
+		// M_Navi_Input_error = M_Navi_Input_error * 180 / M_PI; // degree
 
 		// Stering Input PD Control
 		M_Navi_error = -M_Navi_Input_error;
