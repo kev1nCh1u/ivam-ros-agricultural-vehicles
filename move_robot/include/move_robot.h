@@ -2078,7 +2078,7 @@ void Move_Robot::Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic
 {
 
     //////// testing with out rfid //////////////
-    Magnetic_Event_Trigger = true;
+    Magnetic_Event_Trigger = true; // 
     Magnetic_IMU_Start_Value = EV_Pose_Vec[2];
     //////////////////////////////
 

@@ -130,7 +130,7 @@ private:
 	int v_min = 300; // kevin 最小速度 300
 	int v_max = 400; // kevin 最大速度 400
 	int w_max = 50; // kevin 最大角度 50
-	int v_navi = 335; // kevin 導航速度 335
+	int v_navi = 350; // kevin 導航速度 335
 	float Vision_Navi_Kp = 1; // kevin 影像 kp 1
 };
 onewheel_vw::onewheel_vw(char *dev_name, int Baudrate) : Move_Robot(dev_name, Baudrate)
@@ -190,7 +190,7 @@ onewheel_vw::onewheel_vw(char *dev_name, int Baudrate) : Move_Robot(dev_name, Ba
 	M_Navi_error = 0;
 
 	// 磁導軌 pid 運動學
-	M_Navi_Kp = 7.5; // kevin org:15
+	M_Navi_Kp = 1; // kevin org:15
 	M_Navi_Kd = 3;
 	M_Navi_EV_L = 75; //cm 160 // 75
 
@@ -379,7 +379,8 @@ void onewheel_vw::Magnetic_Navi()
 		// M_Navi_Input_error = M_Navi_Input_error * 180 / M_PI; // degree
 
 		// Stering Input PD Control
-		M_Navi_error = -M_Navi_Input_error;
+		// M_Navi_error = -M_Navi_Input_error;
+		M_Navi_error = -Magnetic_Offset;
 		M_Navi_Output_Steering_Theta = M_Navi_Kp * M_Navi_error + M_Navi_Kd * (M_Navi_error - M_Navi_Pre_error);
 		M_Navi_Pre_error = M_Navi_error;
 
