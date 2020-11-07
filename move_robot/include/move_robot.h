@@ -496,6 +496,7 @@ protected:
     bool Magnetic_Event_Trigger;
     float Magnetic_Offset;
     float Magnetic_IMU_Start_Value;
+    int Magnetic_counter;
 };
 float Move_Robot::v_buf = 0.04;
 Move_Robot::Move_Robot(char *dev_name, int Baudrate)
@@ -2077,13 +2078,21 @@ void Move_Robot::Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg) //kevi
 void Move_Robot::Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg) //kevin
 {
 
-    //////// testing with out rfid //////////////
-    Magnetic_Event_Trigger = true; // 
-    Magnetic_IMU_Start_Value = EV_Pose_Vec[2];
-    //////////////////////////////
+    if(Magnetic_msg.width == 0 && Magnetic_counter <= 30){
+        Magnetic_counter++;
+    }
+
+    if(Magnetic_counter >= 30){
+        Magnetic_Offset = 0;
+        Magnetic_Event_Trigger = false;
+    }
 
     if(Magnetic_msg.width != 0){
+        Magnetic_Event_Trigger = true;              //with out rfid start
+        Magnetic_IMU_Start_Value = EV_Pose_Vec[2];  //with out rfid start
+
         Magnetic_Offset = Magnetic_msg.offset; //cm
+        Magnetic_counter = 0;
     }
     
 }
