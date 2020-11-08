@@ -1018,7 +1018,7 @@ bool onewheel_vw::Tracking_Angle_Init(int &subpath_index, bool isReSet)
 		}
 
 		std::vector<unsigned char> command;
-		sendreceive.Package_OneWheel_encoder(V_rv, W_rw, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 		// 		rpm[1], theta[1],
 		// 		rpm[3], theta[3],
@@ -1322,11 +1322,11 @@ bool onewheel_vw::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		int First_tracking = Path_size * 0.2;
 		//std::cout<<"AA"<<std::endl;
 		//3m 以上之路徑 3m時會開始減速 1.5m時進入進站模式
-		if (Path_size > 75)
+		if (Path_size > 15)
 		{
-			speed_down_count = 75;
+			speed_down_count = 15;
 			speed_down_road = Path_size - speed_down_count;
-			First_tracking = Path_size - 30;
+			First_tracking = Path_size - 7;
 		}
 
 		//路線很長的情況
@@ -1541,13 +1541,16 @@ bool onewheel_vw::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 			cmd_velocity = v_kp * dis_p_error + v_kd * dis_d_error;
 
+			float LOWER_SPEED = 1.0;
+
+
 			if (cmd_velocity > Min_nav_speed)
 			{
 				cmd_velocity = Min_nav_speed;
 			}
-			else if (cmd_velocity < 0.15)
+			else if (cmd_velocity < LOWER_SPEED)
 			{
-				cmd_velocity = 0.15;
+				cmd_velocity = LOWER_SPEED;
 			}
 			float cmd_v;
 			// float cmd_vx = 0;
@@ -1634,7 +1637,7 @@ bool onewheel_vw::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		}
 
 		std::vector<unsigned char> command;
-		sendreceive.Package_OneWheel_encoder(V_rv, delta, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 		// 		rpm[1], theta[1],
 		// 		rpm[3], theta[3],
@@ -1696,6 +1699,7 @@ bool onewheel_vw::Tracking_Trajectory(int &subpath_index, bool isReSet)
 	}
 	return false;
 }
+
 void onewheel_vw::laserCallback(const sensor_msgs::LaserScan &scan)
 {
 
@@ -2386,7 +2390,7 @@ bool onewheel_vw::WaitObsLeave()
 
 		std::vector<unsigned char> command;
 
-		sendreceive.Package_OneWheel_encoder(V_rv, W_rw, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 		// 		rpm[1], theta[1],
 		// 		rpm[3], theta[3],
@@ -2575,7 +2579,7 @@ void onewheel_vw::RePlanning(int &subpath_index,
 		}
 
 		std::vector<unsigned char> command;
-		sendreceive.Package_OneWheel_encoder(V_rv, W_rw, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 		// 		rpm[1], theta[1],
 		// 		rpm[3], theta[3],
@@ -3448,7 +3452,7 @@ bool onewheel_vw::AvoidObs()
 			{
 
 				std::vector<unsigned char> command;
-				sendreceive.Package_OneWheel_encoder(V_rv, W_rw, 1, 0, 0, command);
+				sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command); // kevin rtk
 				// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 				// 		rpm[1], theta[1],
 				// 		rpm[3], theta[3],
@@ -3462,7 +3466,7 @@ bool onewheel_vw::AvoidObs()
 			{
 
 				std::vector<unsigned char> command;
-				sendreceive.Package_OneWheel_encoder(0, W_rw, 1, 0, 0, command);
+				sendreceive.Package_OneWheel_encoder(0, delta, 1, 0, 0, command);
 				// sendreceive.Package_AllDir_encoder(0, theta[0],
 				// 		0, theta[1],
 				// 		0, theta[3],
@@ -3474,7 +3478,7 @@ bool onewheel_vw::AvoidObs()
 		}
 
 		std::vector<unsigned char> command;
-		sendreceive.Package_OneWheel_encoder(V_rv, W_rw, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 		// 		rpm[1], theta[1],
 		// 		rpm[3], theta[3],
@@ -3501,7 +3505,7 @@ bool onewheel_vw::AvoidObs()
 
 		std::vector<unsigned char> command;
 
-		sendreceive.Package_OneWheel_encoder(0, W_rw, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(0, delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(0, theta[0],
 		// 		0, theta[1],
 		// 		0, theta[3],

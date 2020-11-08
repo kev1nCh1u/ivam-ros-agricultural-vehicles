@@ -123,7 +123,7 @@
 #define obs_LineMarker 0
 #define vertical_lineMarker 1
 
-#define Min_nav_speed 0.9
+#define Min_nav_speed 1.0
 #define reMission_time_freq 2
 
 //全域變數
