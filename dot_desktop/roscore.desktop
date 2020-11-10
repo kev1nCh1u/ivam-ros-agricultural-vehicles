@@ -4,8 +4,6 @@ Type=Application
 Terminal=true
 Icon[en_US]=gnome-panel-launcher
 Name[en_US]=roscore
+Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/dot_desktop/img/14554624266871161.png
 
 Exec=bash -c 'source /opt/ros/melodic/setup.bash;roscore;$SHELL'
-
-Name=roscore
-Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/dot_desktop/img/14554624266871161.png

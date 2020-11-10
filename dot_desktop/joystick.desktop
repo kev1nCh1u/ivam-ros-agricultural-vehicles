@@ -4,8 +4,6 @@ Type=Application
 Terminal=true
 Icon[en_US]=gnome-panel-launcher
 Name[en_US]=joystick
+Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/dot_desktop/img/14554624266871161.png
 
 Exec=bash -c 'source /opt/ros/melodic/setup.bash;cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws;source devel/setup.bash;rosrun JoyStick joystick /dev/input/js0;$SHELL'
-
-Name=joystick
-Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/dot_desktop/img/14554624266871161.png

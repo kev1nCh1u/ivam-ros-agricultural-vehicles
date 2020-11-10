@@ -4,8 +4,6 @@ Type=Application
 Terminal=true
 Icon[en_US]=gnome-panel-launcher
 Name[en_US]=move_robot_test
+Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/dot_desktop/img/14554624266871161.png
 
 Exec=bash -c 'source /opt/ros/melodic/setup.bash;cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws;source devel/setup.bash;rosrun move_robot move_robot /dev/kevin_arduino_nano 115200$SHELL'
-
-Name=move_robot_test
-Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/dot_desktop/img/14554624266871161.png
