@@ -123,7 +123,7 @@
 #define obs_LineMarker 0
 #define vertical_lineMarker 1
 
-#define Min_nav_speed 1.0
+#define Min_nav_speed 0.98
 #define reMission_time_freq 2
 
 //全域變數
@@ -2396,7 +2396,7 @@ void Move_Robot::EV_PreLoad_Path()
     std::fstream fin;
 
     // fin.open("/home/ivam/EV_ws/0709GPS_path.txt", std::fstream::in);
-    std::string mapPath = TitlePath + "/GPS_path_1028.txt"; // kevin change map path
+    std::string mapPath = TitlePath + "/GPS_path_load.txt"; // kevin change map path
     std::cout << "load map:" << mapPath << std::endl;
     fin.open(mapPath, std::fstream::in);
     if (!fin.is_open())
@@ -2426,7 +2426,7 @@ void Move_Robot::EV_PreLoad_Path()
         }
         ROS_INFO("The map has been loaded");
     }
-    sleep(3); // kevin wait to check
+    sleep(1); // kevin wait to check
     fin.close();
 
     //std::cout<<"size "<<EV_Path_Subpoint.sub_missonPath_subPoint.size()<<std::endl;

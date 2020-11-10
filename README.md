@@ -33,6 +33,10 @@
 ## debug
     rostopic echo /mr_msg
 
+    rostopic echo /Send_Pose
+
+    rostopic pub -r 5 Send_Pose geometry_msgs/PoseStamped 
+
 ## button
 - back -> load map
 - Y -> send mission
@@ -63,6 +67,4 @@
     rfid KERNELS=="1-1.2:1.0"
 
 ## 問題
-- 轉彎速度慢
-- 沒磁導拿最後的值繼續灣 -> !=0
-- gps 地圖吃不到 -> marker
+- 無

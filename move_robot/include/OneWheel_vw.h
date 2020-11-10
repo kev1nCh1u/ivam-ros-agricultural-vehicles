@@ -211,7 +211,7 @@ onewheel_vw::onewheel_vw(char *dev_name, int Baudrate) : Move_Robot(dev_name, Ba
 	receive_thread_ = new boost::thread(boost::bind(&onewheel_vw::RevProcess, this, 0.01));
 	control_timer = node_.createTimer(ros::Duration(time_sample), &onewheel_vw::timerCallback, this);
 
-	sleep(3); // kevin wait to check
+	sleep(1); // kevin wait to check
 	std::cout << "start..." << std::endl;
 }
 onewheel_vw::~onewheel_vw()
@@ -276,17 +276,29 @@ void onewheel_vw::timerCallback(const ros::TimerEvent &event)
 	}
 	else // kevin 布林條件式 切換導航模式
 	{
-		if (Vision_Event_Trigger == false && Magnetic_Event_Trigger == false)
+		// if (Vision_Event_Trigger == false && Magnetic_Event_Trigger == false)
+		// {
+		// 	State_Machine(p_state_);
+		// }
+		// else if (Vision_Event_Trigger == true && Magnetic_Event_Trigger == false)
+		// {
+		// 	Vision_Navi();
+		// }
+		// else if (Magnetic_Event_Trigger == true && Vision_Event_Trigger == false)
+		// {
+		// 	Magnetic_Navi();
+		// }
+		if (Magnetic_Event_Trigger == true)
+		{
+			Magnetic_Navi();
+		}
+		else if (Vision_Event_Trigger == false)
 		{
 			State_Machine(p_state_);
 		}
-		else if (Vision_Event_Trigger == true && Magnetic_Event_Trigger == false)
+		else if (Vision_Event_Trigger == true)
 		{
 			Vision_Navi();
-		}
-		else if (Magnetic_Event_Trigger == true && Vision_Event_Trigger == false)
-		{
-			Magnetic_Navi();
 		}
 	}
 }
@@ -1018,7 +1030,7 @@ bool onewheel_vw::Tracking_Angle_Init(int &subpath_index, bool isReSet)
 		}
 
 		std::vector<unsigned char> command;
-		sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(V_rev, -delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 		// 		rpm[1], theta[1],
 		// 		rpm[3], theta[3],
@@ -1541,7 +1553,7 @@ bool onewheel_vw::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 			cmd_velocity = v_kp * dis_p_error + v_kd * dis_d_error;
 
-			float LOWER_SPEED = 1.0;
+			float LOWER_SPEED = 0.98;
 
 
 			if (cmd_velocity > Min_nav_speed)
@@ -1637,7 +1649,7 @@ bool onewheel_vw::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		}
 
 		std::vector<unsigned char> command;
-		sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(V_rev, -delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 		// 		rpm[1], theta[1],
 		// 		rpm[3], theta[3],
@@ -2390,7 +2402,7 @@ bool onewheel_vw::WaitObsLeave()
 
 		std::vector<unsigned char> command;
 
-		sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(V_rev, -delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 		// 		rpm[1], theta[1],
 		// 		rpm[3], theta[3],
@@ -2579,7 +2591,7 @@ void onewheel_vw::RePlanning(int &subpath_index,
 		}
 
 		std::vector<unsigned char> command;
-		sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(V_rev, -delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 		// 		rpm[1], theta[1],
 		// 		rpm[3], theta[3],
@@ -3452,7 +3464,7 @@ bool onewheel_vw::AvoidObs()
 			{
 
 				std::vector<unsigned char> command;
-				sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command); // kevin rtk
+				sendreceive.Package_OneWheel_encoder(V_rev, -delta, 1, 0, 0, command); // kevin rtk
 				// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 				// 		rpm[1], theta[1],
 				// 		rpm[3], theta[3],
@@ -3466,7 +3478,7 @@ bool onewheel_vw::AvoidObs()
 			{
 
 				std::vector<unsigned char> command;
-				sendreceive.Package_OneWheel_encoder(0, delta, 1, 0, 0, command);
+				sendreceive.Package_OneWheel_encoder(0, -delta, 1, 0, 0, command);
 				// sendreceive.Package_AllDir_encoder(0, theta[0],
 				// 		0, theta[1],
 				// 		0, theta[3],
@@ -3478,7 +3490,7 @@ bool onewheel_vw::AvoidObs()
 		}
 
 		std::vector<unsigned char> command;
-		sendreceive.Package_OneWheel_encoder(V_rev, delta, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(V_rev, -delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(rpm[0], theta[0],
 		// 		rpm[1], theta[1],
 		// 		rpm[3], theta[3],
@@ -3505,7 +3517,7 @@ bool onewheel_vw::AvoidObs()
 
 		std::vector<unsigned char> command;
 
-		sendreceive.Package_OneWheel_encoder(0, delta, 1, 0, 0, command);
+		sendreceive.Package_OneWheel_encoder(0, -delta, 1, 0, 0, command);
 		// sendreceive.Package_AllDir_encoder(0, theta[0],
 		// 		0, theta[1],
 		// 		0, theta[3],

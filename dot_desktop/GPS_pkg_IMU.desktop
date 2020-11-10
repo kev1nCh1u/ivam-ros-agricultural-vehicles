@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Icon[en_US]=gnome-panel-launcher
+Name[en_US]=GPS_pkg_IMU
+
+Exec=bash -c 'source /opt/ros/melodic/setup.bash;cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws;source devel/setup.bash;rosrun GPS_pkg IMU_ /dev/ttyACM0 115200;$SHELL'
+
+Name=GPS_pkg_IMU
+Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/dot_desktop/img/14554624266871161.png

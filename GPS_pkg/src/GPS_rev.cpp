@@ -238,10 +238,10 @@ void RevProcess(double receive_period)
         static int i = 0; 
 
         while(1){
-            // EV_Pose_msg.pose.position.x = -41.9815; //fake data
-            // EV_Pose_msg.pose.position.y = -50.845;  //fake data
+            // EV_Pose_msg.pose.position.x = 0.0185; //fake data
+            // EV_Pose_msg.pose.position.y = -1.14526e-09;  //fake data
             // EV_Pose_msg.pose.position.z = 0.0;  //fake data
-            //std::cout<<"========================================"<<std::endl;
+            // std::cout<<"========================================"<<std::endl;
             if(mySerial.serial_ok == true){
                 char buff[Receive_Package_Size];
                 int readByte = 0;
@@ -303,9 +303,8 @@ void RevProcess(double receive_period)
                     i = 0;
                     rev_buf.clear();
                 }
-
-
             }
+
             ROS_INFO("Lat: %f ,Lon: %f,IMU: %f", EV_Pose_msg.pose.position.x, EV_Pose_msg.pose.position.y, EV_Pose_msg.pose.position.z);
             chatter_pub.publish(EV_Pose_msg);
             r_receive.sleep();
