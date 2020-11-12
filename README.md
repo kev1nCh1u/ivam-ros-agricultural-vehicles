@@ -22,9 +22,10 @@
 
     rosrun GPS_pkg IMU_ /dev/ttyACM0 115200
 
+    rosrun rviz rviz -d /home/user/Desktop/Farm_AGV_MPC_0929_ws/src/agricultural_vehicles_rviz.rviz
+
     rosrun move_robot move_robot /dev/agricultural_arduino_nano 115200
     
-    rosrun rviz rviz -d /home/user/Desktop/Farm_AGV_MPC_0929_ws/src/agricultural_vehicles_rviz.rviz
 
 ## RTK導航啟動步驟
 - open rviz
