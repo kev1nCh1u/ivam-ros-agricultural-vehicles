@@ -2077,12 +2077,12 @@ void Move_Robot::Farm_AGV_RFID_Callback(const std_msgs::String &RFID_msg) //kevi
 
 void Move_Robot::Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic_msg) //kevin
 {
-
-    if(Magnetic_msg.width == 0 && Magnetic_counter <= 30){
+    int Magnetic_delay = 1000;
+    if(Magnetic_msg.width == 0 && Magnetic_counter <= Magnetic_delay){
         Magnetic_counter++;
     }
 
-    if(Magnetic_counter >= 30){
+    if(Magnetic_counter >= Magnetic_delay){
         Magnetic_Offset = 0;
         Magnetic_Event_Trigger = false;
     }
