@@ -42,17 +42,16 @@ def vmuFuc() :
                 break
 
         if(vmu_ser[2] == ord('e')): # 7
-            vmu_x = struct.unpack('>f', bytearray(list(vmu_ser[7:11])))
-            vmu_y = struct.unpack('>f', bytearray(list(vmu_ser[11:15])))
-            vmu_z = struct.unpack('>f', bytearray(list(vmu_ser[15:19])))
+            vmu_x = struct.unpack('>f', bytearray(list(vmu_ser[7:11])))[0]
+            vmu_y = struct.unpack('>f', bytearray(list(vmu_ser[11:15])))[0]
+            vmu_z = struct.unpack('>f', bytearray(list(vmu_ser[15:19])))[0]
             break
-    vmu_data = [vmu_x[0], vmu_y[0], vmu_z[0]]
-    return vmu_data
+    return vmu_x, vmu_y, vmu_z
 
 
 
 print("start......")
 while 1:
-    vmu_data = vmuFuc()
+    vmu_x, vmu_y, vmu_z = vmuFuc()
 
-    print('%.4f %.4f %.4f'%(vmu_data[0],vmu_data[1],vmu_data[2]))
+    print('%.4f %.4f %.4f'%(vmu_x, vmu_y, vmu_z))

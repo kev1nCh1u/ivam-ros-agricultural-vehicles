@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 # license removed for brevity
+
+#############################################################################
+# python ros rfid
+# by Kevin Chiu 2020
+#############################################################################
 import rospy
 from std_msgs.msg import String
 

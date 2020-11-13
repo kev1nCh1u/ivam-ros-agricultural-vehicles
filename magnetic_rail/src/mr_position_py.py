@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # license removed for brevity
-import rospy
-from std_msgs.msg import String
 
+#############################################################################
+# python ros magnetic_rail
+# by Kevin Chiu 2020
+#############################################################################
 import numpy as np
 import serial
 import time
 import sys
 
+import rospy
 from std_msgs.msg import String
 from magnetic_rail.msg import MrMsg
 

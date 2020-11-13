@@ -227,6 +227,12 @@ target_link_libraries(IMU_
 )
 add_dependencies(IMU_ IMU_)
 
+################
+## vmu931_py  ##
+################
+catkin_install_python(PROGRAMS src/kevin_vmu931_rev_py.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 
 
