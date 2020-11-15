@@ -225,7 +225,7 @@ void RevProcess(double receive_period)
         std::vector<char> rev_buf;
         std::vector<std::string> gps_data_buf;
         std::fstream file;
-        file.open("GPS_path.txt" , std::fstream::app);
+        file.open("src/GPS_path.txt" , std::fstream::app);
         double Display_lat = 0;
         double Display_lon = 0;
         double Center_Lat = 2500.67057;

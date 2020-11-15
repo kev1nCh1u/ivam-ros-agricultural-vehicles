@@ -2396,12 +2396,12 @@ void Move_Robot::EV_PreLoad_Path()
     std::fstream fin;
 
     // fin.open("/home/ivam/EV_ws/0709GPS_path.txt", std::fstream::in);
-    std::string mapPath = TitlePath + "/GPS_path_load.txt"; // kevin change map path
+    std::string mapPath = TitlePath + "/src/GPS_path_load.txt"; // kevin change map path
     std::cout << "load map:" << mapPath << std::endl;
     fin.open(mapPath, std::fstream::in);
     if (!fin.is_open())
     {
-        ROS_INFO("Error: GPS_path map file is not opened!!");
+        ROS_ERROR("Error: GPS_path map file is not opened!!");
         //return false;
     }
     else

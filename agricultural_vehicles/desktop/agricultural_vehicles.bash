@@ -30,7 +30,7 @@ gnome-terminal --tab -t "IMU_" -- bash -ic "rosrun GPS_pkg kevin_vmu931_rev_py.p
 sleep 0.2
 gnome-terminal --tab -t "rviz" -- bash -ic "rosrun rviz rviz -d /home/user/Desktop/Farm_AGV_MPC_0929_ws/src/agricultural_vehicles_rviz.rviz"
 sleep 0.2
-gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/agricultural_arduino_nano 115200"
-sleep 0.2
-# gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/kevin_arduino_nano 115200"
+# gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/agricultural_arduino_nano 115200"
 # sleep 0.2
+gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/kevin_arduino_nano 115200"
+sleep 0.2
