@@ -47,7 +47,7 @@
 
     rostopic echo /Send_Pose
 
-    rostopic pub -r 5 Send_Pose geometry_msgs/PoseStamped 
+    rostopic pub -r 5 Send_Pose geometry_msgs/PoseStamped // tab 
 
 ## usb 固定
     lsusb
@@ -75,5 +75,4 @@
 
 
 ## 問題
-- RTK 手動歸位
 - IMU 校正

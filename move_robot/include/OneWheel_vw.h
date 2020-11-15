@@ -200,7 +200,9 @@ onewheel_vw::onewheel_vw(char *dev_name, int Baudrate) : Move_Robot(dev_name, Ba
 	laserSubscriber_ = node_.subscribe("scan", 10, &onewheel_vw::laserCallback, this);
 	JoysickSubscriber_ = node_.subscribe("joystick", 5, &onewheel_vw::joystickCallback, this);
 	TriggerSubscriber_ = node_.subscribe("Trigger", 5, &onewheel_vw::TriggerCallback_all, this);
-	initial_pose_sub_ = new message_filters::Subscriber<geometry_msgs::PoseWithCovarianceStamped>(node_, "initialpose", 2);
+
+	// kevin read rviz
+	initial_pose_sub_ = new message_filters::Subscriber<geometry_msgs::PoseWithCovarianceStamped>(node_, "initialpose", 2); // kevin 2D Pose Estimate
 	initial_pose_filter_ = new tf::MessageFilter<geometry_msgs::PoseWithCovarianceStamped>(*initial_pose_sub_, tf_, "map", 2);
 	initial_pose_filter_->registerCallback(boost::bind(&onewheel_vw::initialPoseCallback, this, _1));
 

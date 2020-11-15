@@ -210,6 +210,13 @@ struct gap
     float distance;
 };
 
+// kevin 2D Pose Estimate
+struct Kevin2Dposition 
+{
+    double x;
+    double y;
+};
+
 class Move_Robot
 {
 
@@ -481,6 +488,7 @@ protected:
     SUB_MISSONPATH_SUBPOINT EV_Path_Subpoint;
 
     //EV Pose
+    struct Kevin2Dposition position_adjust; // kevin 2D Pose Estimate 
     double IMU_adjust;
     double EV_yaw;
     double EV_yaw_radian;
@@ -2099,6 +2107,11 @@ void Move_Robot::Farm_AGV_Magnetic_Callback(const magnetic_rail::MrMsg &Magnetic
 
 void Move_Robot::Fix_IMU(const geometry_msgs::PoseStamped EV_Pose_msg, Eigen::Vector3f &EV_Pose_Vec)
 {
+    // kevin 2D Pose Estimate
+    double kevin_ev_x, kevin_ev_y;
+    kevin_ev_x = EV_Pose_msg.pose.position.x + position_adjust.x;
+    kevin_ev_y = EV_Pose_msg.pose.position.y + position_adjust.y;
+
     EV_yaw = (EV_Pose_msg.pose.position.z + ((IMU_adjust * 180) / M_PI));
     if (EV_yaw > 180)
     {
@@ -2109,7 +2122,7 @@ void Move_Robot::Fix_IMU(const geometry_msgs::PoseStamped EV_Pose_msg, Eigen::Ve
         EV_yaw = EV_yaw + 360;
     }
     EV_yaw_radian = (EV_yaw * M_PI) / 180; //MDFK Update_EV_Pose need Heading in Radian NOT FUNCKING Degree!!!!!
-    EV_Pose_Vec = Eigen::Vector3f(EV_Pose_msg.pose.position.x, EV_Pose_msg.pose.position.y, EV_yaw_radian);
+    EV_Pose_Vec = Eigen::Vector3f(kevin_ev_x, kevin_ev_y, EV_yaw_radian);
     //ROS_INFO("Lat: %f ,Lon: %f,Fixed IMU: %f ,IMU_adjust: %f ", EV_Pose_Vec.x(), EV_Pose_Vec.y(), EV_yaw, IMU_adjust);
     //ROS_INFO("IMU_adjust: %f", IMU_adjust);
 }
@@ -2365,6 +2378,12 @@ void Move_Robot::initialPoseCallback(const geometry_msgs::PoseWithCovarianceStam
     tf::Pose pose;
     tf::poseMsgToTF(msg->pose.pose, pose);
     Eigen::Vector3f initial_pose_ = Eigen::Vector3f(msg->pose.pose.position.x, msg->pose.pose.position.y, tf::getYaw(pose.getRotation()));
+    
+    // kevin 2D Pose Estimate
+    position_adjust.x = initial_pose_[0];
+    position_adjust.y = initial_pose_[1];
+    std::cout << "kevin_x:" << position_adjust.x << " kevin_y" << position_adjust.y << std::endl;
+
     IMU_adjust = initial_pose_[2];
     ROS_INFO("Setting initial pose with world coords x: %f y: %f yaw: %f", initial_pose_[0], initial_pose_[1], initial_pose_[2]);
     ROS_INFO("Start Position Initial");
@@ -2384,6 +2403,7 @@ void Move_Robot::initialPoseCallback(const geometry_msgs::PoseWithCovarianceStam
     EV_Pose_Publisher_.publish(a);
 
     ROS_INFO("map");
+    sleep(1);  // kevin wait to check
 }
 
 void Move_Robot::EV_PreLoad_Path()

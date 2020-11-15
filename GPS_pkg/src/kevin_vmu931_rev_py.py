@@ -97,14 +97,20 @@ if __name__ == '__main__':
     print("port: " + input_port)
     print("baudrate: " + input_baudrate)
     print('=========================')
-    g_ser_vmu = serial.Serial(input_port, input_baudrate, bytesize=8,
-                             parity=serial.PARITY_EVEN, stopbits=1, timeout=0.07)
+    try:
+        g_ser_vmu = serial.Serial(input_port, input_baudrate, bytesize=8,
+                                 parity=serial.PARITY_EVEN, stopbits=1, timeout=0.07)
+    except:
+        print('\033[91m' + "serial error!!!")
+        while 1:
+            continue
     time.sleep(1)
 
     ################### test serial #################
     if(g_ser_vmu.read().encode('hex') == ""):
-        print("serial error!!!")
-        exit()
+        print('\033[91m' + "serial error!!!")
+        while 1:
+            continue
 
     try:
         vmu_talker()
