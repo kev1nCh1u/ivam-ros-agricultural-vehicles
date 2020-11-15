@@ -15,7 +15,8 @@ echo -e "\033[32m
 # by Kevin Chiu 2020         #
 ##############################
 \033[0m"
-cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws
+cd ~/ros/agricultural_vehicles/
+source ~/ros/agricultural_vehicles/devel/setup.bash
 
 gnome-terminal --tab -t "roscore" -- bash -ic "roscore"
 sleep 0.2
@@ -30,7 +31,7 @@ sleep 0.2
 gnome-terminal --tab -t "IMU_" -- bash -ic "rosrun GPS_pkg kevin_vmu931_rev_py.py /dev/ttyACM0 115200"
 sleep 0.2
 
-gnome-terminal --tab -t "rviz" -- bash -ic "rosrun rviz rviz -d /home/user/Desktop/Farm_AGV_MPC_0929_ws/src/agricultural_vehicles_rviz.rviz"
+gnome-terminal --tab -t "rviz" -- bash -ic "rosrun rviz rviz -d ~/ros/agricultural_vehicles/src/agricultural_vehicles_rviz.rviz"
 sleep 0.2
 
 # gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/agricultural_arduino_nano 115200"

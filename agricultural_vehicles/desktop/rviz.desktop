@@ -4,6 +4,6 @@ Type=Application
 Terminal=true
 Icon[en_US]=gnome-panel-launcher
 Name[en_US]=rviz
-Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/agricultural_vehicles/desktop/ros_icon.png
+Icon=/home/user/ros/agricultural_vehicles/src/agricultural_vehicles/desktop/ros_icon.png
 
-Exec=bash -c 'source /opt/ros/melodic/setup.bash;rosrun rviz rviz -d /home/user/Desktop/Farm_AGV_MPC_0929_ws/src/agricultural_vehicles_rviz.rviz ;$SHELL'
+Exec=bash -c 'source /opt/ros/melodic/setup.bash;rosrun rviz rviz -d ~/ros/agricultural_vehicles/src/agricultural_vehicles_rviz.rviz ;$SHELL'

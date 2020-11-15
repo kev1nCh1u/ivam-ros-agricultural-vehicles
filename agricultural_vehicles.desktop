@@ -4,6 +4,6 @@ Type=Application
 Terminal=true
 Icon[en_US]=gnome-panel-launcher
 Name[en_US]=agricultural_vehicles
-Icon=/home/user/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/agricultural_vehicles/desktop/ros_icon.png
+Icon=/home/user/ros/agricultural_vehicles/src/agricultural_vehicles/desktop/ros_icon.png
 
-Exec=bash -ic '~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws/src/agricultural_vehicles/agricultural_vehicles.bash;$SHELL'
+Exec=bash -ic '~/ros/agricultural_vehicles/src/agricultural_vehicles/agricultural_vehicles.bash;$SHELL'
