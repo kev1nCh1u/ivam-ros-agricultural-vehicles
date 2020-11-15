@@ -15,6 +15,7 @@ echo -e "\033[32m
 # by Kevin Chiu 2020         #
 ##############################
 \033[0m"
+cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws
 
 gnome-terminal --tab -t "roscore" -- bash -ic "roscore"
 sleep 0.2
@@ -36,3 +37,5 @@ sleep 0.2
 # gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/kevin_arduino_nano 115200"
 gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/ttyUSB0 115200"
 sleep 0.2
+
+exec bash
