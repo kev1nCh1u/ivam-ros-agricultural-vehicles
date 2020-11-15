@@ -4,7 +4,7 @@
     sudo chmod 777 /dev/ttyUSB0
 
 ## start command
-    cd ~/ros/agricultural_vehicles/Farm_AGV_MPC_0929_ws
+    cd ~/ros/agricultural_vehicles
     
     roscore
     
@@ -22,7 +22,7 @@
 
     rosrun GPS_pkg IMU_ /dev/ttyACM0 115200
 
-    rosrun rviz rviz -d /home/user/Desktop/Farm_AGV_MPC_0929_ws/src/agricultural_vehicles_rviz.rviz
+    rosrun rviz rviz -d ~/ros/agricultural_vehicles/src/agricultural_vehicles_rviz.rviz
 
     rosrun move_robot move_robot /dev/agricultural_arduino_nano 115200
     
