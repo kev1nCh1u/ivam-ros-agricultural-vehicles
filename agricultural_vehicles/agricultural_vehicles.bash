@@ -24,19 +24,19 @@ gnome-terminal --tab -t "joystick" -- bash -ic "rosrun JoyStick joystick /dev/in
 sleep 0.2
 gnome-terminal --tab -t "magnetic_rail" -- bash -ic "rosrun magnetic_rail mr_position_py.py /dev/agricultural_magnetic_rail 115200"
 sleep 0.2
-gnome-terminal --tab -t "GPS_" -- bash -ic "rosrun GPS_pkg GPS_ /dev/ttyUSB2 38400"
+gnome-terminal --tab -t "GPS_" -- bash -ic "rosrun GPS_pkg GPS_ /dev/ttyUSB1 38400"
 sleep 0.2
 
-# gnome-terminal --tab -t "IMU_" -- bash -ic "rosrun GPS_pkg IMU_ /dev/ttyACM0 115200"
-gnome-terminal --tab -t "IMU_" -- bash -ic "rosrun GPS_pkg kevin_vmu931_rev_py.py /dev/ttyACM0 115200"
+gnome-terminal --tab -t "IMU_" -- bash -ic "rosrun GPS_pkg IMU_ /dev/ttyACM0 115200"
+# gnome-terminal --tab -t "IMU_" -- bash -ic "rosrun GPS_pkg kevin_vmu931_rev_py.py /dev/ttyACM0 115200"
 sleep 0.2
 
 gnome-terminal --tab -t "rviz" -- bash -ic "rosrun rviz rviz -d ~/ros/agricultural_vehicles/src/agricultural_vehicles_rviz.rviz"
 sleep 0.2
 
-# gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/agricultural_arduino_nano 115200"
+gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/agricultural_arduino_nano 115200"
 # gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/kevin_arduino_nano 115200"
-gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/ttyUSB0 115200"
+# gnome-terminal --tab -t "move_robot" -- bash -ic "rosrun move_robot move_robot /dev/ttyUSB0 115200"
 sleep 0.2
 
 exec bash

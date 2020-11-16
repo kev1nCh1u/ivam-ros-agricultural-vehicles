@@ -25,6 +25,12 @@
     rosrun rviz rviz -d ~/ros/agricultural_vehicles/src/agricultural_vehicles_rviz.rviz
 
     rosrun move_robot move_robot /dev/agricultural_arduino_nano 115200
+
+    rosrun AnhungControl AnhungControl "192.168.0.11" 9930
+
+    roslaunch hector_slam_launch tutorial.launch
+    
+    rosrun sick_tim sick_tim551_2050001 "192.168.0.10"
     
 
 ## RTK導航啟動步驟
@@ -47,7 +53,10 @@
 
     rostopic echo /Send_Pose
 
-    rostopic pub -r 5 Send_Pose geometry_msgs/PoseStamped // tab 
+    rostopic pub -r 5 Send_Pose geometry_msgs/PoseStamped // tab
+
+    rostopic pub /Command std_msgs/String "data: 'Create Map'"
+    rostopic pub /Command std_msgs/String "data: 'Save Map'"
 
 ## usb 固定
     lsusb
