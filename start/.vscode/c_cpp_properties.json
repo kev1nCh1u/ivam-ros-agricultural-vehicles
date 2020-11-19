@@ -1,0 +1,29 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/user/ros/agricultural_vehicles/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/user/ros/agricultural_vehicles/src/AnhungControl/include/**",
+        "/home/user/ros/agricultural_vehicles/src/GPS_pkg/include/**",
+        "/home/user/ros/agricultural_vehicles/src/JoyStick/include/**",
+        "/home/user/ros/agricultural_vehicles/src/agricultural_vehicles/include/**",
+        "/home/user/ros/agricultural_vehicles/src/hector_slam_anhung/hector_geotiff/include/**",
+        "/home/user/ros/agricultural_vehicles/src/hector_slam_anhung/hector_map_tools/include/**",
+        "/home/user/ros/agricultural_vehicles/src/hector_slam_anhung/hector_mapping/include/**",
+        "/home/user/ros/agricultural_vehicles/src/hector_slam_anhung/hector_marker_drawing/include/**",
+        "/home/user/ros/agricultural_vehicles/src/kevin_tcp/include/**",
+        "/home/user/ros/agricultural_vehicles/src/magnetic_rail/include/**",
+        "/home/user/ros/agricultural_vehicles/src/microsoft_rfid/include/**",
+        "/home/user/ros/agricultural_vehicles/src/move_robot/include/**",
+        "/home/user/ros/agricultural_vehicles/src/sick_tim/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ]
+}
