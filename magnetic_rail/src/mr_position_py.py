@@ -18,6 +18,9 @@ import threading
 
 mr_msg = MrMsg()
 
+############################################################################
+# magnet function
+############################################################################3
 def magnetFuc():
     num = 0
     offset = 0
@@ -59,7 +62,9 @@ def magnetFuc():
     return num, offset, width
 
 
-
+##############################################################################
+# mr_talker
+###########################################################################
 def mr_talker():
     global mr_msg
 
@@ -78,11 +83,14 @@ def mr_talker():
         mr_msg.offset = offset
         mr_msg.width = width
 
-        rospy.loginfo(mr_msg.offset)
+        print(mr_msg.offset, "\t",mr_msg.width)
         pub.publish(mr_msg)
 
         # rate.sleep()
 
+############################################################################
+# main
+#############################################################################
 if __name__ == '__main__':
     try:
         input_argv = sys.argv

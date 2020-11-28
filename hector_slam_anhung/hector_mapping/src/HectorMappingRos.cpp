@@ -1667,15 +1667,18 @@ void HectorMappingRos::LoadTitlePath()
 	std::string recv_pkg[100];
 
 	int count=0;
-	std::stringstream cut(NOWPath);
-	while(getline(cut,PATH_par,'/'))
-	{
-		recv_pkg[count]=PATH_par;
-		std::cout<<" recv_pkg= "<<count << " "<< recv_pkg[count]<<std::endl;
-		count++;
-	}
+    std::stringstream cut(NOWPath);
+    while(getline(cut,PATH_par,'/'))
+    {
+        recv_pkg[count]=PATH_par;
+        count++;
+    }
 
-	TitlePath = "/" + recv_pkg[1] + "/" + recv_pkg[2] + "/" + recv_pkg[3] + "/" + recv_pkg[4];
+	// TitlePath = "/" + recv_pkg[1] + "/" + recv_pkg[2] + "/" + recv_pkg[3];
+    for(int i=1; i<count-2; i++){ // kevin
+        TitlePath += "/" + recv_pkg[i];
+    }
+	
 	std::cout<<"TitlePath  " <<TitlePath <<std::endl;
 
 }

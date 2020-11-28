@@ -2309,14 +2309,18 @@ void Control::LoadTitlePath()
 	std::string recv_pkg[100];
 
 	int count=0;
-	std::stringstream cut(NOWPath);
-	while(getline(cut,PATH_par,'/'))
-	{
-		recv_pkg[count]=PATH_par;
-		count++;
-	}
+    std::stringstream cut(NOWPath);
+    while(getline(cut,PATH_par,'/'))
+    {
+        recv_pkg[count]=PATH_par;
+        count++;
+    }
 
-	TitlePath = "/" + recv_pkg[1] + "/" + recv_pkg[2] + "/" + recv_pkg[3];
+	// TitlePath = "/" + recv_pkg[1] + "/" + recv_pkg[2] + "/" + recv_pkg[3];
+    for(int i=1; i<count-2; i++){ // kevin
+        TitlePath += "/" + recv_pkg[i];
+    }
+	
 	std::cout<<"TitlePath  " <<TitlePath <<std::endl;
 
 }

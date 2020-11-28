@@ -13,7 +13,9 @@ import serial
 import time
 import sys
 
-
+############################################################################
+# rfid function
+############################################################################
 def rfidFuc():
     g_ser_rfid.write([0xaa, 0xdd, 0x00, 0x03, 0x01, 0x0c, 0x0d])
     read = g_ser_rfid.read(18)
@@ -22,7 +24,9 @@ def rfidFuc():
         # print(read_hex)
         return read_hex
 
-
+##############################################################################
+# rfid talker node
+###########################################################################
 def rfid_talker():
     pub = rospy.Publisher('rfid_msg', String, queue_size=10)
     rospy.init_node('rfid_talker', anonymous=True)
@@ -30,11 +34,13 @@ def rfid_talker():
     while not rospy.is_shutdown():
 
         rfid_id = rfidFuc()
-        rospy.loginfo(rfid_id)
+        print(rfid_id)
         pub.publish(rfid_id)
         rate.sleep()
 
-
+############################################################################
+# main
+#############################################################################
 if __name__ == '__main__':
     try:
         input_argv = sys.argv
